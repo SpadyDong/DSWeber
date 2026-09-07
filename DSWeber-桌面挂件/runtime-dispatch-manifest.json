@@ -1,0 +1,560 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-01T13:18:24.799Z",
+  "source": "build-page-dispatch-manifest.mjs",
+  "mode": "library-bound",
+  "summary_path": "runtime-orchestration-summary.json",
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.08.06.19.15.08",
+    "version_source": "skill-release-manifest.json",
+    "schema_version": "1.0",
+    "release": "prompt-base-cloud-ssot-migration",
+    "read_status": "loaded"
+  },
+  "dispatchPreflightManifest": [
+    {
+      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "generatedBy": "build-page-dispatch-manifest.mjs",
+      "packetType": "LibraryBoundPagePacket",
+      "laneContract": {
+        "resolvedLane": "library_bound",
+        "packetType": "LibraryBoundPagePacket",
+        "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+      },
+      "taskLinePresent": true,
+      "outputPathPresent": true,
+      "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "nodeId": "page-pet-idle",
+      "htmlSrc": "pages/pet-idle.html",
+      "supplementaryReads": [
+        {
+          "path": "delivery-quality/page-rendering-quality-gate.md",
+          "reason": "layout-risk page needs critical-layout css discipline",
+          "ownerLane": "shared"
+        }
+      ],
+      "allowedWritePaths": [
+        "pages/pet-idle.html",
+        "assets/"
+      ],
+      "forbiddenWriteRoots": [
+        "*.design",
+        "runtime-orchestration-summary.json",
+        "validation-report.json",
+        "finish-readiness-report.json",
+        "restore-contract-report.json",
+        "page-generation-summary.json"
+      ],
+      "toolPolicy": {
+        "todoWriteAllowed": false,
+        "validationScriptsAllowed": false,
+        "previewAllowed": false,
+        "helperScriptsAllowed": false,
+        "designFileWriteAllowed": false,
+        "allowedWritePaths": [
+          "pages/pet-idle.html",
+          "assets/"
+        ]
+      },
+      "skillRuntime": {
+        "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+        "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+        "toolPaths": {
+          "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+          "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+          "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+          "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+          "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+          "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+        },
+        "requiredForPageSubAgent": [
+          "applyHtmlHeadContract",
+          "recordDispatchCompletion"
+        ],
+        "pathInjection": "absolute",
+        "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+        "commandTemplates": {
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+        }
+      },
+      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html",
+      "brandPrefix": "doubao",
+      "aestheticsMode": "library-bound",
+      "toolDisciplineBlockPresent": true,
+      "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
+      "headFillMode": "skeleton-first",
+      "viewportMode": "app-shell",
+      "completionSchemaExpected": "full",
+      "restoreFields": null,
+      "restoreContractStatus": null,
+      "restoreCompactPacket": null,
+      "deterministicCommands": null,
+      "sourceAuthorityLock": null,
+      "preDispatchFileHashes": {
+        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+      },
+      "contextPreflight": {
+        "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "requiredContextFiles": [
+          "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+          "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+          "delivery-quality/page-rendering-quality-gate.md",
+          "delivery-quality/design-artifact-validation.md",
+          "delivery-quality/delivery-evidence-contract.md"
+        ],
+        "optionalContextFiles": [
+          "visual-experience/visual-experience-guidelines.md"
+        ],
+        "passed": true
+      },
+      "pageSliceOnly": true,
+      "requiredFieldsPresent": true,
+      "missingFields": [],
+      "fillHtmlHeadCommandValid": true,
+      "mobileNavigation": {
+        "required": false,
+        "appliesToThisPage": false,
+        "canonicalHtmlIncluded": false,
+        "missingFields": []
+      },
+      "persistedToSummary": true,
+      "taskQueryAudited": false,
+      "proofSource": "summary-only",
+      "largeWorkflowFilesInTaskQuery": null
+    },
+    {
+      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "generatedBy": "build-page-dispatch-manifest.mjs",
+      "packetType": "LibraryBoundPagePacket",
+      "laneContract": {
+        "resolvedLane": "library_bound",
+        "packetType": "LibraryBoundPagePacket",
+        "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+      },
+      "taskLinePresent": true,
+      "outputPathPresent": true,
+      "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "nodeId": "page-pet-hover-menu",
+      "htmlSrc": "pages/pet-hover-menu.html",
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-hover-menu.html",
+        "assets/"
+      ],
+      "forbiddenWriteRoots": [
+        "*.design",
+        "runtime-orchestration-summary.json",
+        "validation-report.json",
+        "finish-readiness-report.json",
+        "restore-contract-report.json",
+        "page-generation-summary.json"
+      ],
+      "toolPolicy": {
+        "todoWriteAllowed": false,
+        "validationScriptsAllowed": false,
+        "previewAllowed": false,
+        "helperScriptsAllowed": false,
+        "designFileWriteAllowed": false,
+        "allowedWritePaths": [
+          "pages/pet-hover-menu.html",
+          "assets/"
+        ]
+      },
+      "skillRuntime": {
+        "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+        "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+        "toolPaths": {
+          "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+          "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+          "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+          "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+          "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+          "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+        },
+        "requiredForPageSubAgent": [
+          "applyHtmlHeadContract",
+          "recordDispatchCompletion"
+        ],
+        "pathInjection": "absolute",
+        "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+        "commandTemplates": {
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+        }
+      },
+      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-hover-menu.html",
+      "brandPrefix": "doubao",
+      "aestheticsMode": "library-bound",
+      "toolDisciplineBlockPresent": true,
+      "fillHtmlHeadCommand": null,
+      "headFillMode": "skeleton-first",
+      "viewportMode": "app-shell",
+      "completionSchemaExpected": "full",
+      "restoreFields": null,
+      "restoreContractStatus": null,
+      "restoreCompactPacket": null,
+      "deterministicCommands": null,
+      "sourceAuthorityLock": null,
+      "preDispatchFileHashes": {
+        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+      },
+      "contextPreflight": {
+        "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "requiredContextFiles": [
+          "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+          "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+          "delivery-quality/page-rendering-quality-gate.md",
+          "delivery-quality/design-artifact-validation.md",
+          "delivery-quality/delivery-evidence-contract.md"
+        ],
+        "optionalContextFiles": [
+          "visual-experience/visual-experience-guidelines.md"
+        ],
+        "passed": true
+      },
+      "pageSliceOnly": true,
+      "requiredFieldsPresent": true,
+      "missingFields": [],
+      "fillHtmlHeadCommandValid": true,
+      "mobileNavigation": {
+        "required": false,
+        "appliesToThisPage": false,
+        "canonicalHtmlIncluded": false,
+        "missingFields": []
+      },
+      "persistedToSummary": true,
+      "taskQueryAudited": false,
+      "proofSource": "summary-only",
+      "largeWorkflowFilesInTaskQuery": null
+    },
+    {
+      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "generatedBy": "build-page-dispatch-manifest.mjs",
+      "packetType": "LibraryBoundPagePacket",
+      "laneContract": {
+        "resolvedLane": "library_bound",
+        "packetType": "LibraryBoundPagePacket",
+        "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+      },
+      "taskLinePresent": true,
+      "outputPathPresent": true,
+      "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "nodeId": "page-pet-balance-peak",
+      "htmlSrc": "pages/pet-balance-peak.html",
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-balance-peak.html",
+        "assets/"
+      ],
+      "forbiddenWriteRoots": [
+        "*.design",
+        "runtime-orchestration-summary.json",
+        "validation-report.json",
+        "finish-readiness-report.json",
+        "restore-contract-report.json",
+        "page-generation-summary.json"
+      ],
+      "toolPolicy": {
+        "todoWriteAllowed": false,
+        "validationScriptsAllowed": false,
+        "previewAllowed": false,
+        "helperScriptsAllowed": false,
+        "designFileWriteAllowed": false,
+        "allowedWritePaths": [
+          "pages/pet-balance-peak.html",
+          "assets/"
+        ]
+      },
+      "skillRuntime": {
+        "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+        "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+        "toolPaths": {
+          "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+          "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+          "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+          "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+          "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+          "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+        },
+        "requiredForPageSubAgent": [
+          "applyHtmlHeadContract",
+          "recordDispatchCompletion"
+        ],
+        "pathInjection": "absolute",
+        "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+        "commandTemplates": {
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+        }
+      },
+      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-peak.html",
+      "brandPrefix": "doubao",
+      "aestheticsMode": "library-bound",
+      "toolDisciplineBlockPresent": true,
+      "fillHtmlHeadCommand": null,
+      "headFillMode": "skeleton-first",
+      "viewportMode": "app-shell",
+      "completionSchemaExpected": "full",
+      "restoreFields": null,
+      "restoreContractStatus": null,
+      "restoreCompactPacket": null,
+      "deterministicCommands": null,
+      "sourceAuthorityLock": null,
+      "preDispatchFileHashes": {
+        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+      },
+      "contextPreflight": {
+        "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "requiredContextFiles": [
+          "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+          "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+          "delivery-quality/page-rendering-quality-gate.md",
+          "delivery-quality/design-artifact-validation.md",
+          "delivery-quality/delivery-evidence-contract.md"
+        ],
+        "optionalContextFiles": [
+          "visual-experience/visual-experience-guidelines.md"
+        ],
+        "passed": true
+      },
+      "pageSliceOnly": true,
+      "requiredFieldsPresent": true,
+      "missingFields": [],
+      "fillHtmlHeadCommandValid": true,
+      "mobileNavigation": {
+        "required": false,
+        "appliesToThisPage": false,
+        "canonicalHtmlIncluded": false,
+        "missingFields": []
+      },
+      "persistedToSummary": true,
+      "taskQueryAudited": false,
+      "proofSource": "summary-only",
+      "largeWorkflowFilesInTaskQuery": null
+    },
+    {
+      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "generatedBy": "build-page-dispatch-manifest.mjs",
+      "packetType": "LibraryBoundPagePacket",
+      "laneContract": {
+        "resolvedLane": "library_bound",
+        "packetType": "LibraryBoundPagePacket",
+        "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+      },
+      "taskLinePresent": true,
+      "outputPathPresent": true,
+      "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "nodeId": "page-pet-balance-offpeak",
+      "htmlSrc": "pages/pet-balance-offpeak.html",
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-balance-offpeak.html",
+        "assets/"
+      ],
+      "forbiddenWriteRoots": [
+        "*.design",
+        "runtime-orchestration-summary.json",
+        "validation-report.json",
+        "finish-readiness-report.json",
+        "restore-contract-report.json",
+        "page-generation-summary.json"
+      ],
+      "toolPolicy": {
+        "todoWriteAllowed": false,
+        "validationScriptsAllowed": false,
+        "previewAllowed": false,
+        "helperScriptsAllowed": false,
+        "designFileWriteAllowed": false,
+        "allowedWritePaths": [
+          "pages/pet-balance-offpeak.html",
+          "assets/"
+        ]
+      },
+      "skillRuntime": {
+        "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+        "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+        "toolPaths": {
+          "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+          "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+          "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+          "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+          "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+          "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+        },
+        "requiredForPageSubAgent": [
+          "applyHtmlHeadContract",
+          "recordDispatchCompletion"
+        ],
+        "pathInjection": "absolute",
+        "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+        "commandTemplates": {
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+        }
+      },
+      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-offpeak.html",
+      "brandPrefix": "doubao",
+      "aestheticsMode": "library-bound",
+      "toolDisciplineBlockPresent": true,
+      "fillHtmlHeadCommand": null,
+      "headFillMode": "skeleton-first",
+      "viewportMode": "app-shell",
+      "completionSchemaExpected": "full",
+      "restoreFields": null,
+      "restoreContractStatus": null,
+      "restoreCompactPacket": null,
+      "deterministicCommands": null,
+      "sourceAuthorityLock": null,
+      "preDispatchFileHashes": {
+        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+      },
+      "contextPreflight": {
+        "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "requiredContextFiles": [
+          "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+          "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+          "delivery-quality/page-rendering-quality-gate.md",
+          "delivery-quality/design-artifact-validation.md",
+          "delivery-quality/delivery-evidence-contract.md"
+        ],
+        "optionalContextFiles": [
+          "visual-experience/visual-experience-guidelines.md"
+        ],
+        "passed": true
+      },
+      "pageSliceOnly": true,
+      "requiredFieldsPresent": true,
+      "missingFields": [],
+      "fillHtmlHeadCommandValid": true,
+      "mobileNavigation": {
+        "required": false,
+        "appliesToThisPage": false,
+        "canonicalHtmlIncluded": false,
+        "missingFields": []
+      },
+      "persistedToSummary": true,
+      "taskQueryAudited": false,
+      "proofSource": "summary-only",
+      "largeWorkflowFilesInTaskQuery": null
+    },
+    {
+      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "generatedBy": "build-page-dispatch-manifest.mjs",
+      "packetType": "LibraryBoundPagePacket",
+      "laneContract": {
+        "resolvedLane": "library_bound",
+        "packetType": "LibraryBoundPagePacket",
+        "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+      },
+      "taskLinePresent": true,
+      "outputPathPresent": true,
+      "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+      "nodeId": "page-pet-settings",
+      "htmlSrc": "pages/pet-settings.html",
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-settings.html",
+        "assets/"
+      ],
+      "forbiddenWriteRoots": [
+        "*.design",
+        "runtime-orchestration-summary.json",
+        "validation-report.json",
+        "finish-readiness-report.json",
+        "restore-contract-report.json",
+        "page-generation-summary.json"
+      ],
+      "toolPolicy": {
+        "todoWriteAllowed": false,
+        "validationScriptsAllowed": false,
+        "previewAllowed": false,
+        "helperScriptsAllowed": false,
+        "designFileWriteAllowed": false,
+        "allowedWritePaths": [
+          "pages/pet-settings.html",
+          "assets/"
+        ]
+      },
+      "skillRuntime": {
+        "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+        "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+        "toolPaths": {
+          "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+          "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+          "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+          "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+          "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+          "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+        },
+        "requiredForPageSubAgent": [
+          "applyHtmlHeadContract",
+          "recordDispatchCompletion"
+        ],
+        "pathInjection": "absolute",
+        "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+        "commandTemplates": {
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+        }
+      },
+      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-settings.html",
+      "brandPrefix": "doubao",
+      "aestheticsMode": "library-bound",
+      "toolDisciplineBlockPresent": true,
+      "fillHtmlHeadCommand": null,
+      "headFillMode": "skeleton-first",
+      "viewportMode": "app-shell",
+      "completionSchemaExpected": "full",
+      "restoreFields": null,
+      "restoreContractStatus": null,
+      "restoreCompactPacket": null,
+      "deterministicCommands": null,
+      "sourceAuthorityLock": null,
+      "preDispatchFileHashes": {
+        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+      },
+      "contextPreflight": {
+        "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "requiredContextFiles": [
+          "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+          "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+          "delivery-quality/page-rendering-quality-gate.md",
+          "delivery-quality/design-artifact-validation.md",
+          "delivery-quality/delivery-evidence-contract.md"
+        ],
+        "optionalContextFiles": [
+          "visual-experience/visual-experience-guidelines.md"
+        ],
+        "passed": true
+      },
+      "pageSliceOnly": true,
+      "requiredFieldsPresent": true,
+      "missingFields": [],
+      "fillHtmlHeadCommandValid": true,
+      "mobileNavigation": {
+        "required": false,
+        "appliesToThisPage": false,
+        "canonicalHtmlIncluded": false,
+        "missingFields": []
+      },
+      "persistedToSummary": true,
+      "taskQueryAudited": false,
+      "proofSource": "summary-only",
+      "largeWorkflowFilesInTaskQuery": null
+    }
+  ],
+  "deterministicCommandsByPage": {
+    "pages/pet-idle.html": {},
+    "pages/pet-hover-menu.html": {},
+    "pages/pet-balance-peak.html": {},
+    "pages/pet-balance-offpeak.html": {},
+    "pages/pet-settings.html": {}
+  }
+}

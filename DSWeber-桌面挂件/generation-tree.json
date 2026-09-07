@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "2026.07.11.0",
+  "designProjectPath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件",
+  "resolvedLane": "library_bound",
+  "stateGroupId": "dsweber-desktop-pet",
+  "dispatchRule": "sequential-by-dependency; a node may start only after every ancestor output file exists and is non-empty",
+  "root": {
+    "nodeId": "gen-desktop-stage",
+    "kind": "project-shell",
+    "pageIds": [
+      "page-pet-idle",
+      "page-pet-hover-menu",
+      "page-pet-balance-peak",
+      "page-pet-balance-offpeak",
+      "page-pet-settings"
+    ],
+    "output": "partials/desktop-stage.html",
+    "inheritedFragments": [],
+    "sharedRegions": [
+      "desktop-stage-root-frame",
+      "desktop-wallpaper-layer",
+      "desktop-shortcut-column",
+      "taskbar-chrome",
+      "tray-cluster",
+      "stage-spacing-scale",
+      "stage-typography-scale"
+    ],
+    "privateRegions": [],
+    "mutableSlots": [
+      "whaleDock",
+      "overlayLayer",
+      "trayActiveState"
+    ],
+    "status": "planned",
+    "children": [
+      {
+        "nodeId": "gen-glass-primitives",
+        "kind": "shared-branch",
+        "pageIds": [
+          "page-pet-idle",
+          "page-pet-hover-menu",
+          "page-pet-balance-peak",
+          "page-pet-balance-offpeak",
+          "page-pet-settings"
+        ],
+        "output": "partials/glass-panel.html",
+        "inheritedFragments": [
+          "partials/desktop-stage.html"
+        ],
+        "sharedRegions": [
+          "glass-surface-recipe",
+          "glass-panel-shell",
+          "glass-bubble-shell",
+          "glass-menu-shell",
+          "glass-status-chip",
+          "glass-divider",
+          "glass-radius-model",
+          "glass-focus-ring-model"
+        ],
+        "privateRegions": [],
+        "mutableSlots": [
+          "glassPanelTitle",
+          "glassPanelBody",
+          "glassPanelFooter"
+        ],
+        "status": "planned",
+        "children": [
+          {
+            "nodeId": "gen-whale-dock",
+            "kind": "shared-branch",
+            "pageIds": [
+              "page-pet-idle",
+              "page-pet-hover-menu",
+              "page-pet-balance-peak",
+              "page-pet-balance-offpeak",
+              "page-pet-settings"
+            ],
+            "output": "partials/whale-dock.html",
+            "inheritedFragments": [
+              "partials/desktop-stage.html",
+              "partials/glass-panel.html"
+            ],
+            "sharedRegions": [
+              "whale-mascot-figure",
+              "whale-anchor-rail",
+              "whale-hover-hotspot",
+              "whale-breathing-motion",
+              "whale-connection-status-chip",
+              "whale-shadow-pool"
+            ],
+            "privateRegions": [],
+            "mutableSlots": [
+              "whaleStateClass",
+              "overlayLayer"
+            ],
+            "status": "planned",
+            "children": [
+              {
+                "nodeId": "gen-page-pet-idle",
+                "kind": "page-leaf",
+                "pageIds": [
+                  "page-pet-idle"
+                ],
+                "output": "pages/pet-idle.html",
+                "stateRole": "base",
+                "stateGroupId": "dsweber-desktop-pet",
+                "inheritedFragments": [
+                  "partials/desktop-stage.html",
+                  "partials/glass-panel.html",
+                  "partials/whale-dock.html"
+                ],
+                "sharedRegions": [
+                  "desktop-stage-root-frame",
+                  "desktop-wallpaper-layer",
+                  "taskbar-chrome",
+                  "whale-mascot-figure",
+                  "glass-surface-recipe"
+                ],
+                "privateRegions": [
+                  "idle-state-hint-caption",
+                  "critical-layout-style-block"
+                ],
+                "mutableSlots": [],
+                "status": "planned",
+                "children": [
+                  {
+                    "nodeId": "gen-page-pet-hover-menu",
+                    "kind": "page-leaf",
+                    "pageIds": [
+                      "page-pet-hover-menu"
+                    ],
+                    "stateRole": "derived",
+                    "stateGroupId": "dsweber-desktop-pet",
+                    "derivedFromHtmlSrc": "pages/pet-idle.html",
+                    "output": "pages/pet-hover-menu.html",
+                    "inheritedFragments": [
+                      "partials/desktop-stage.html",
+                      "partials/glass-panel.html",
+                      "partials/whale-dock.html"
+                    ],
+                    "sharedRegions": [
+                      "desktop-stage-root-frame",
+                      "desktop-wallpaper-layer",
+                      "taskbar-chrome",
+                      "whale-mascot-figure",
+                      "glass-surface-recipe"
+                    ],
+                    "privateRegions": [
+                      "hover-radial-menu-overlay"
+                    ],
+                    "mutableRegions": [
+                      "overlayLayer",
+                      "whaleStateClass"
+                    ],
+                    "mutableSlots": [],
+                    "status": "planned",
+                    "children": []
+                  },
+                  {
+                    "nodeId": "gen-page-pet-balance-peak",
+                    "kind": "page-leaf",
+                    "pageIds": [
+                      "page-pet-balance-peak"
+                    ],
+                    "stateRole": "derived",
+                    "stateGroupId": "dsweber-desktop-pet",
+                    "derivedFromHtmlSrc": "pages/pet-idle.html",
+                    "output": "pages/pet-balance-peak.html",
+                    "inheritedFragments": [
+                      "partials/desktop-stage.html",
+                      "partials/glass-panel.html",
+                      "partials/whale-dock.html"
+                    ],
+                    "sharedRegions": [
+                      "desktop-stage-root-frame",
+                      "desktop-wallpaper-layer",
+                      "taskbar-chrome",
+                      "whale-mascot-figure",
+                      "glass-surface-recipe"
+                    ],
+                    "privateRegions": [
+                      "balance-bubble-overlay-peak"
+                    ],
+                    "mutableRegions": [
+                      "overlayLayer",
+                      "whaleStateClass"
+                    ],
+                    "mutableSlots": [],
+                    "status": "planned",
+                    "children": []
+                  },
+                  {
+                    "nodeId": "gen-page-pet-balance-offpeak",
+                    "kind": "page-leaf",
+                    "pageIds": [
+                      "page-pet-balance-offpeak"
+                    ],
+                    "stateRole": "derived",
+                    "stateGroupId": "dsweber-desktop-pet",
+                    "derivedFromHtmlSrc": "pages/pet-idle.html",
+                    "output": "pages/pet-balance-offpeak.html",
+                    "inheritedFragments": [
+                      "partials/desktop-stage.html",
+                      "partials/glass-panel.html",
+                      "partials/whale-dock.html"
+                    ],
+                    "sharedRegions": [
+                      "desktop-stage-root-frame",
+                      "desktop-wallpaper-layer",
+                      "taskbar-chrome",
+                      "whale-mascot-figure",
+                      "glass-surface-recipe"
+                    ],
+                    "privateRegions": [
+                      "balance-bubble-overlay-offpeak"
+                    ],
+                    "mutableRegions": [
+                      "overlayLayer",
+                      "whaleStateClass"
+                    ],
+                    "mutableSlots": [],
+                    "status": "planned",
+                    "children": []
+                  },
+                  {
+                    "nodeId": "gen-page-pet-settings",
+                    "kind": "page-leaf",
+                    "pageIds": [
+                      "page-pet-settings"
+                    ],
+                    "stateRole": "derived",
+                    "stateGroupId": "dsweber-desktop-pet",
+                    "derivedFromHtmlSrc": "pages/pet-idle.html",
+                    "output": "pages/pet-settings.html",
+                    "inheritedFragments": [
+                      "partials/desktop-stage.html",
+                      "partials/glass-panel.html",
+                      "partials/whale-dock.html"
+                    ],
+                    "sharedRegions": [
+                      "desktop-stage-root-frame",
+                      "desktop-wallpaper-layer",
+                      "taskbar-chrome",
+                      "whale-mascot-figure",
+                      "glass-surface-recipe"
+                    ],
+                    "privateRegions": [
+                      "settings-panel-overlay",
+                      "settings-form-fields"
+                    ],
+                    "mutableRegions": [
+                      "overlayLayer",
+                      "whaleStateClass"
+                    ],
+                    "mutableSlots": [],
+                    "status": "planned",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "data": [
+    {
+      "id": "page-pet-idle",
+      "title": "桌面待机 · 鲸鱼常驻",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "htmlSrc": "pages/pet-idle.html",
+        "interactions": []
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      }
+    },
+    {
+      "id": "page-pet-hover-menu",
+      "title": "悬停展开 · 四项快捷菜单",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "htmlSrc": "pages/pet-hover-menu.html",
+        "interactions": []
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      }
+    },
+    {
+      "id": "page-pet-balance-peak",
+      "title": "余额气泡 · 峰时计价",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "htmlSrc": "pages/pet-balance-peak.html",
+        "interactions": []
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      }
+    },
+    {
+      "id": "page-pet-balance-offpeak",
+      "title": "余额气泡 · 谷时计价",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "htmlSrc": "pages/pet-balance-offpeak.html",
+        "interactions": []
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      }
+    },
+    {
+      "id": "page-pet-settings",
+      "title": "设置面板 · 账号与刷新",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "htmlSrc": "pages/pet-settings.html",
+        "interactions": []
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0
+      }
+    },
+    {
+      "id": "image-001",
+      "title": "鲸鱼吉祥物 · 透明底插画",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "imageSrc": "assets/whale-mascot.png"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "深海桌面壁纸 · 深色底图",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1788252807691,
+      "devMetadata": {
+        "imageSrc": "assets/desktop-wallpaper.png"
+      },
+      "canvasData": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "DSWeber 桌面挂件",
+    "designLibrary": {
+      "name": "Doubao",
+      "id": "dl_builtin_doubao",
+      "version": 0,
+      "scope": "builtin",
+      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao",
+      "versionSource": "metadata.json"
+    }
+  }
+}

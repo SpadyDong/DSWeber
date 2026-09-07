@@ -1,0 +1,1403 @@
+{
+  "schemaVersion": "2026.07.11.0",
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": "2026.08.06.19.15.08",
+    "version_source": "skill-release-manifest.json",
+    "schema_version": "1.0",
+    "release": "prompt-base-cloud-ssot-migration",
+    "read_status": "loaded"
+  },
+  "project": {
+    "projectName": "DSWeber 桌面挂件",
+    "designProjectPath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件",
+    "designFile": "DSWeber-桌面挂件.design",
+    "resolvedLane": "library_bound",
+    "operatingMode": "library-bound",
+    "deviceType": "desktop",
+    "themeMode": "dark",
+    "expectedPages": 5,
+    "stateGroupId": "dsweber-desktop-pet",
+    "intentProfile": {
+      "caseFamily": "library_bound",
+      "userGoal": "为 DSWeber 桌面鲸鱼挂件产出高保真视觉稿，覆盖待机、悬停菜单、峰谷余额气泡与设置面板五个状态",
+      "deliverableForm": "high-fidelity static HTML visual spec",
+      "designAuthority": "Doubao design library tokens",
+      "runtimeExpectation": "not-a-runnable-app",
+      "confirmedByUser": true
+    },
+    "selectedIntentWorkflowRead": true,
+    "contextReadScope": "library_bound lane runtime contracts + Doubao library ingestion evidence only; no other intent workflow runbook loaded",
+    "contextRequirementsLoaded": [
+      {
+        "path": "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+        "readStatus": "loaded",
+        "bodyRead": true,
+        "recordedAt": "2026-09-01T00:00:00Z"
+      },
+      {
+        "path": "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+        "readStatus": "loaded",
+        "bodyRead": true,
+        "recordedAt": "2026-09-01T00:00:00Z"
+      },
+      {
+        "path": "delivery-quality/page-rendering-quality-gate.md",
+        "readStatus": "loaded",
+        "bodyRead": true,
+        "recordedAt": "2026-09-01T00:00:00Z"
+      },
+      {
+        "path": "delivery-quality/design-artifact-validation.md",
+        "readStatus": "loaded",
+        "bodyRead": true,
+        "recordedAt": "2026-09-01T00:00:00Z"
+      },
+      {
+        "path": "delivery-quality/delivery-evidence-contract.md",
+        "readStatus": "loaded",
+        "bodyRead": true,
+        "recordedAt": "2026-09-01T00:00:00Z"
+      }
+    ],
+    "readScopeLedger": [
+      {
+        "path": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+        "reason": "selected lane workflow entry",
+        "readStatus": "loaded"
+      },
+      {
+        "path": "intent-workflows/intent-page-library-bound/dispatch-contract.md",
+        "reason": "library_bound dispatch required/forbidden fields",
+        "readStatus": "loaded"
+      },
+      {
+        "path": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "reason": "page sub-agent runtime guide reference",
+        "readStatus": "loaded"
+      },
+      {
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\metadata.json",
+        "reason": "library identity",
+        "readStatus": "loaded"
+      },
+      {
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "reason": "actual token name reference",
+        "readStatus": "loaded"
+      },
+      {
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\components\\index.json",
+        "reason": "component plan source",
+        "readStatus": "loaded"
+      },
+      {
+        "actor": "page-sub-agent",
+        "lane": "library_bound",
+        "path": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "reason": "page runtime guide",
+        "scopeClass": "page-runtime",
+        "declaredBeforeRead": true,
+        "recordedAt": "2026-09-01T13:18:24.777Z",
+        "nodeId": "page-pet-idle",
+        "htmlSrc": "pages/pet-idle.html"
+      },
+      {
+        "actor": "page-sub-agent",
+        "lane": "library_bound",
+        "path": "intent-workflows/intent-page-library-bound/dispatch-contract.md",
+        "reason": "dispatch contract",
+        "scopeClass": "dispatch-contract",
+        "declaredBeforeRead": true,
+        "recordedAt": "2026-09-01T13:18:24.777Z",
+        "nodeId": "page-pet-idle",
+        "htmlSrc": "pages/pet-idle.html"
+      },
+      {
+        "actor": "page-sub-agent",
+        "lane": "library_bound",
+        "path": "delivery-quality/page-rendering-quality-gate.md",
+        "reason": "layout-risk page needs critical-layout css discipline",
+        "ownerLane": "shared",
+        "scopeClass": "supplementary",
+        "declaredBeforeRead": true,
+        "recordedAt": "2026-09-01T13:18:24.777Z",
+        "nodeId": "page-pet-idle",
+        "htmlSrc": "pages/pet-idle.html"
+      }
+    ],
+    "validationRunDiscipline": {
+      "maxFullValidationRuns": 2,
+      "softWarningsTriggerRepair": false,
+      "blockingRepairMode": "targeted-once",
+      "forbiddenRepairTriggers": [
+        "soft-warning-only",
+        "provenance-warning-only",
+        "style-warning-only"
+      ]
+    },
+    "lowValueCallWatchdog": {
+      "applies": true,
+      "noProgressSignals": [
+        "no_tool_call",
+        "no_artifact_diff",
+        "no_structured_decision"
+      ],
+      "noProgressNextAction": "enter_readiness_or_blocked_summary",
+      "recordedAt": "2026-09-01T00:00:00Z"
+    },
+    "sharedProjectShellContract": {
+      "shellOwnerNodeId": "gen-desktop-stage",
+      "shellFragments": [
+        "partials/desktop-stage.html",
+        "partials/glass-panel.html",
+        "partials/whale-dock.html"
+      ],
+      "sharedRegions": [
+        "desktop-stage-root-frame",
+        "desktop-wallpaper-layer",
+        "desktop-shortcut-column",
+        "taskbar-chrome",
+        "tray-cluster",
+        "whale-mascot-figure",
+        "whale-anchor-rail",
+        "whale-shadow-pool",
+        "glass-surface-recipe",
+        "glass-radius-model",
+        "glass-focus-ring-model"
+      ],
+      "mutableSlots": [
+        "whaleDock",
+        "overlayLayer",
+        "trayActiveState",
+        "glassPanelTitle",
+        "glassPanelBody",
+        "glassPanelFooter",
+        "whaleStateClass"
+      ],
+      "activeStateSlotModel": "single [data-active=\"true\"] rule driven by data-nav-key on the taskbar/tray cluster; leaves may only set the activeNavItem slot value",
+      "consistencyRule": "Every page in stateGroupId dsweber-desktop-pet must reuse the identical stage frame, wallpaper layer, shortcut column, taskbar chrome and whale dock markup; only declared mutableRegions may differ.",
+      "viewportMode": "app-shell",
+      "footerRegion": "taskbar-chrome"
+    },
+    "sourceAuthorityLock": {
+      "visualAuthority": "Doubao design library tokens (dl_builtin_doubao)",
+      "mayOverrideVisualAuthority": false,
+      "lockedBeforeDispatch": true
+    },
+    "visualQualityCheckpoints": [
+      {
+        "checkpointId": "vq-visual-anchor",
+        "dimension": "visual-anchor",
+        "expected": "鲸鱼娘全身立绘作为唯一视觉锚点，占据桌面右下角显著体量，其余元素不与其争夺注意力",
+        "evidenceTarget": "pages/pet-idle.html 内 whale-mascot-figure 区域使用 assets/whale-mascot.png"
+      },
+      {
+        "checkpointId": "vq-information-hierarchy",
+        "dimension": "information-hierarchy",
+        "expected": "余额数值为一级信息，峰谷标识为二级，刷新时间与说明为三级；字重不超过 3 种",
+        "evidenceTarget": "pages/pet-balance-peak.html 与 pet-balance-offpeak.html 的气泡层级"
+      },
+      {
+        "checkpointId": "vq-composition-structure",
+        "dimension": "composition-structure",
+        "expected": "统一的桌面舞台构图：壁纸底层 + 左侧快捷图标列 + 底部任务栏 + 右下鲸鱼坞，浮层从鲸鱼锚点向左上展开",
+        "evidenceTarget": "partials/desktop-stage.html 与 partials/whale-dock.html 共享区域"
+      },
+      {
+        "checkpointId": "vq-implementation-strategy",
+        "dimension": "implementation-strategy",
+        "expected": "只使用豆包 token 与 Tailwind utilities，不新增自定义组件 CSS；关键布局用 critical-layout 局部样式块固化",
+        "evidenceTarget": "pages/pet-idle.html 的 style#critical-layout"
+      }
+    ],
+    "generationTree": {
+      "schemaVersion": "2026.07.11.0",
+      "designProjectPath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件",
+      "resolvedLane": "library_bound",
+      "stateGroupId": "dsweber-desktop-pet",
+      "dispatchRule": "sequential-by-dependency; a node may start only after every ancestor output file exists and is non-empty",
+      "root": {
+        "nodeId": "gen-desktop-stage",
+        "kind": "project-shell",
+        "pageIds": [
+          "page-pet-idle",
+          "page-pet-hover-menu",
+          "page-pet-balance-peak",
+          "page-pet-balance-offpeak",
+          "page-pet-settings"
+        ],
+        "output": "partials/desktop-stage.html",
+        "inheritedFragments": [],
+        "sharedRegions": [
+          "desktop-stage-root-frame",
+          "desktop-wallpaper-layer",
+          "desktop-shortcut-column",
+          "taskbar-chrome",
+          "tray-cluster",
+          "stage-spacing-scale",
+          "stage-typography-scale"
+        ],
+        "privateRegions": [],
+        "mutableSlots": [
+          "whaleDock",
+          "overlayLayer",
+          "trayActiveState"
+        ],
+        "status": "planned",
+        "children": [
+          {
+            "nodeId": "gen-glass-primitives",
+            "kind": "shared-branch",
+            "pageIds": [
+              "page-pet-idle",
+              "page-pet-hover-menu",
+              "page-pet-balance-peak",
+              "page-pet-balance-offpeak",
+              "page-pet-settings"
+            ],
+            "output": "partials/glass-panel.html",
+            "inheritedFragments": [
+              "partials/desktop-stage.html"
+            ],
+            "sharedRegions": [
+              "glass-surface-recipe",
+              "glass-panel-shell",
+              "glass-bubble-shell",
+              "glass-menu-shell",
+              "glass-status-chip",
+              "glass-divider",
+              "glass-radius-model",
+              "glass-focus-ring-model"
+            ],
+            "privateRegions": [],
+            "mutableSlots": [
+              "glassPanelTitle",
+              "glassPanelBody",
+              "glassPanelFooter"
+            ],
+            "status": "planned",
+            "children": [
+              {
+                "nodeId": "gen-whale-dock",
+                "kind": "shared-branch",
+                "pageIds": [
+                  "page-pet-idle",
+                  "page-pet-hover-menu",
+                  "page-pet-balance-peak",
+                  "page-pet-balance-offpeak",
+                  "page-pet-settings"
+                ],
+                "output": "partials/whale-dock.html",
+                "inheritedFragments": [
+                  "partials/desktop-stage.html",
+                  "partials/glass-panel.html"
+                ],
+                "sharedRegions": [
+                  "whale-mascot-figure",
+                  "whale-anchor-rail",
+                  "whale-hover-hotspot",
+                  "whale-breathing-motion",
+                  "whale-connection-status-chip",
+                  "whale-shadow-pool"
+                ],
+                "privateRegions": [],
+                "mutableSlots": [
+                  "whaleStateClass",
+                  "overlayLayer"
+                ],
+                "status": "planned",
+                "children": [
+                  {
+                    "nodeId": "gen-page-pet-idle",
+                    "kind": "page-leaf",
+                    "pageIds": [
+                      "page-pet-idle"
+                    ],
+                    "output": "pages/pet-idle.html",
+                    "stateRole": "base",
+                    "stateGroupId": "dsweber-desktop-pet",
+                    "inheritedFragments": [
+                      "partials/desktop-stage.html",
+                      "partials/glass-panel.html",
+                      "partials/whale-dock.html"
+                    ],
+                    "sharedRegions": [
+                      "desktop-stage-root-frame",
+                      "desktop-wallpaper-layer",
+                      "taskbar-chrome",
+                      "whale-mascot-figure",
+                      "glass-surface-recipe"
+                    ],
+                    "privateRegions": [
+                      "idle-state-hint-caption",
+                      "critical-layout-style-block"
+                    ],
+                    "mutableSlots": [],
+                    "status": "planned",
+                    "children": [
+                      {
+                        "nodeId": "gen-page-pet-hover-menu",
+                        "kind": "page-leaf",
+                        "pageIds": [
+                          "page-pet-hover-menu"
+                        ],
+                        "stateRole": "derived",
+                        "stateGroupId": "dsweber-desktop-pet",
+                        "derivedFromHtmlSrc": "pages/pet-idle.html",
+                        "output": "pages/pet-hover-menu.html",
+                        "inheritedFragments": [
+                          "partials/desktop-stage.html",
+                          "partials/glass-panel.html",
+                          "partials/whale-dock.html"
+                        ],
+                        "sharedRegions": [
+                          "desktop-stage-root-frame",
+                          "desktop-wallpaper-layer",
+                          "taskbar-chrome",
+                          "whale-mascot-figure",
+                          "glass-surface-recipe"
+                        ],
+                        "privateRegions": [
+                          "hover-radial-menu-overlay"
+                        ],
+                        "mutableRegions": [
+                          "overlayLayer",
+                          "whaleStateClass"
+                        ],
+                        "mutableSlots": [],
+                        "status": "planned",
+                        "children": []
+                      },
+                      {
+                        "nodeId": "gen-page-pet-balance-peak",
+                        "kind": "page-leaf",
+                        "pageIds": [
+                          "page-pet-balance-peak"
+                        ],
+                        "stateRole": "derived",
+                        "stateGroupId": "dsweber-desktop-pet",
+                        "derivedFromHtmlSrc": "pages/pet-idle.html",
+                        "output": "pages/pet-balance-peak.html",
+                        "inheritedFragments": [
+                          "partials/desktop-stage.html",
+                          "partials/glass-panel.html",
+                          "partials/whale-dock.html"
+                        ],
+                        "sharedRegions": [
+                          "desktop-stage-root-frame",
+                          "desktop-wallpaper-layer",
+                          "taskbar-chrome",
+                          "whale-mascot-figure",
+                          "glass-surface-recipe"
+                        ],
+                        "privateRegions": [
+                          "balance-bubble-overlay-peak"
+                        ],
+                        "mutableRegions": [
+                          "overlayLayer",
+                          "whaleStateClass"
+                        ],
+                        "mutableSlots": [],
+                        "status": "planned",
+                        "children": []
+                      },
+                      {
+                        "nodeId": "gen-page-pet-balance-offpeak",
+                        "kind": "page-leaf",
+                        "pageIds": [
+                          "page-pet-balance-offpeak"
+                        ],
+                        "stateRole": "derived",
+                        "stateGroupId": "dsweber-desktop-pet",
+                        "derivedFromHtmlSrc": "pages/pet-idle.html",
+                        "output": "pages/pet-balance-offpeak.html",
+                        "inheritedFragments": [
+                          "partials/desktop-stage.html",
+                          "partials/glass-panel.html",
+                          "partials/whale-dock.html"
+                        ],
+                        "sharedRegions": [
+                          "desktop-stage-root-frame",
+                          "desktop-wallpaper-layer",
+                          "taskbar-chrome",
+                          "whale-mascot-figure",
+                          "glass-surface-recipe"
+                        ],
+                        "privateRegions": [
+                          "balance-bubble-overlay-offpeak"
+                        ],
+                        "mutableRegions": [
+                          "overlayLayer",
+                          "whaleStateClass"
+                        ],
+                        "mutableSlots": [],
+                        "status": "planned",
+                        "children": []
+                      },
+                      {
+                        "nodeId": "gen-page-pet-settings",
+                        "kind": "page-leaf",
+                        "pageIds": [
+                          "page-pet-settings"
+                        ],
+                        "stateRole": "derived",
+                        "stateGroupId": "dsweber-desktop-pet",
+                        "derivedFromHtmlSrc": "pages/pet-idle.html",
+                        "output": "pages/pet-settings.html",
+                        "inheritedFragments": [
+                          "partials/desktop-stage.html",
+                          "partials/glass-panel.html",
+                          "partials/whale-dock.html"
+                        ],
+                        "sharedRegions": [
+                          "desktop-stage-root-frame",
+                          "desktop-wallpaper-layer",
+                          "taskbar-chrome",
+                          "whale-mascot-figure",
+                          "glass-surface-recipe"
+                        ],
+                        "privateRegions": [
+                          "settings-panel-overlay",
+                          "settings-form-fields"
+                        ],
+                        "mutableRegions": [
+                          "overlayLayer",
+                          "whaleStateClass"
+                        ],
+                        "mutableSlots": [],
+                        "status": "planned",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dispatchPreflightManifest": [
+      {
+        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "generatedBy": "build-page-dispatch-manifest.mjs",
+        "packetType": "LibraryBoundPagePacket",
+        "laneContract": {
+          "resolvedLane": "library_bound",
+          "packetType": "LibraryBoundPagePacket",
+          "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+          "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+        },
+        "taskLinePresent": true,
+        "outputPathPresent": true,
+        "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "nodeId": "page-pet-idle",
+        "htmlSrc": "pages/pet-idle.html",
+        "supplementaryReads": [
+          {
+            "path": "delivery-quality/page-rendering-quality-gate.md",
+            "reason": "layout-risk page needs critical-layout css discipline",
+            "ownerLane": "shared"
+          }
+        ],
+        "allowedWritePaths": [
+          "pages/pet-idle.html",
+          "assets/"
+        ],
+        "forbiddenWriteRoots": [
+          "*.design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "finish-readiness-report.json",
+          "restore-contract-report.json",
+          "page-generation-summary.json"
+        ],
+        "toolPolicy": {
+          "todoWriteAllowed": false,
+          "validationScriptsAllowed": false,
+          "previewAllowed": false,
+          "helperScriptsAllowed": false,
+          "designFileWriteAllowed": false,
+          "allowedWritePaths": [
+            "pages/pet-idle.html",
+            "assets/"
+          ]
+        },
+        "skillRuntime": {
+          "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+          "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+          "toolPaths": {
+            "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+            "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+            "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+            "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+            "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+            "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+          },
+          "requiredForPageSubAgent": [
+            "applyHtmlHeadContract",
+            "recordDispatchCompletion"
+          ],
+          "pathInjection": "absolute",
+          "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+          "commandTemplates": {
+            "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          }
+        },
+        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html",
+        "brandPrefix": "doubao",
+        "aestheticsMode": "library-bound",
+        "toolDisciplineBlockPresent": true,
+        "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
+        "headFillMode": "skeleton-first",
+        "viewportMode": "app-shell",
+        "completionSchemaExpected": "full",
+        "restoreFields": null,
+        "restoreContractStatus": null,
+        "restoreCompactPacket": null,
+        "deterministicCommands": null,
+        "sourceAuthorityLock": null,
+        "preDispatchFileHashes": {
+          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        },
+        "contextPreflight": {
+          "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+          "requiredContextFiles": [
+            "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+            "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+            "delivery-quality/page-rendering-quality-gate.md",
+            "delivery-quality/design-artifact-validation.md",
+            "delivery-quality/delivery-evidence-contract.md"
+          ],
+          "optionalContextFiles": [
+            "visual-experience/visual-experience-guidelines.md"
+          ],
+          "passed": true
+        },
+        "pageSliceOnly": true,
+        "requiredFieldsPresent": true,
+        "missingFields": [],
+        "fillHtmlHeadCommandValid": true,
+        "mobileNavigation": {
+          "required": false,
+          "appliesToThisPage": false,
+          "canonicalHtmlIncluded": false,
+          "missingFields": []
+        },
+        "persistedToSummary": true,
+        "taskQueryAudited": false,
+        "proofSource": "summary-only",
+        "largeWorkflowFilesInTaskQuery": null
+      },
+      {
+        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "generatedBy": "build-page-dispatch-manifest.mjs",
+        "packetType": "LibraryBoundPagePacket",
+        "laneContract": {
+          "resolvedLane": "library_bound",
+          "packetType": "LibraryBoundPagePacket",
+          "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+          "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+        },
+        "taskLinePresent": true,
+        "outputPathPresent": true,
+        "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "nodeId": "page-pet-hover-menu",
+        "htmlSrc": "pages/pet-hover-menu.html",
+        "supplementaryReads": [],
+        "allowedWritePaths": [
+          "pages/pet-hover-menu.html",
+          "assets/"
+        ],
+        "forbiddenWriteRoots": [
+          "*.design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "finish-readiness-report.json",
+          "restore-contract-report.json",
+          "page-generation-summary.json"
+        ],
+        "toolPolicy": {
+          "todoWriteAllowed": false,
+          "validationScriptsAllowed": false,
+          "previewAllowed": false,
+          "helperScriptsAllowed": false,
+          "designFileWriteAllowed": false,
+          "allowedWritePaths": [
+            "pages/pet-hover-menu.html",
+            "assets/"
+          ]
+        },
+        "skillRuntime": {
+          "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+          "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+          "toolPaths": {
+            "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+            "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+            "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+            "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+            "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+            "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+          },
+          "requiredForPageSubAgent": [
+            "applyHtmlHeadContract",
+            "recordDispatchCompletion"
+          ],
+          "pathInjection": "absolute",
+          "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+          "commandTemplates": {
+            "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          }
+        },
+        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-hover-menu.html",
+        "brandPrefix": "doubao",
+        "aestheticsMode": "library-bound",
+        "toolDisciplineBlockPresent": true,
+        "fillHtmlHeadCommand": null,
+        "headFillMode": "skeleton-first",
+        "viewportMode": "app-shell",
+        "completionSchemaExpected": "full",
+        "restoreFields": null,
+        "restoreContractStatus": null,
+        "restoreCompactPacket": null,
+        "deterministicCommands": null,
+        "sourceAuthorityLock": null,
+        "preDispatchFileHashes": {
+          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        },
+        "contextPreflight": {
+          "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+          "requiredContextFiles": [
+            "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+            "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+            "delivery-quality/page-rendering-quality-gate.md",
+            "delivery-quality/design-artifact-validation.md",
+            "delivery-quality/delivery-evidence-contract.md"
+          ],
+          "optionalContextFiles": [
+            "visual-experience/visual-experience-guidelines.md"
+          ],
+          "passed": true
+        },
+        "pageSliceOnly": true,
+        "requiredFieldsPresent": true,
+        "missingFields": [],
+        "fillHtmlHeadCommandValid": true,
+        "mobileNavigation": {
+          "required": false,
+          "appliesToThisPage": false,
+          "canonicalHtmlIncluded": false,
+          "missingFields": []
+        },
+        "persistedToSummary": true,
+        "taskQueryAudited": false,
+        "proofSource": "summary-only",
+        "largeWorkflowFilesInTaskQuery": null
+      },
+      {
+        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "generatedBy": "build-page-dispatch-manifest.mjs",
+        "packetType": "LibraryBoundPagePacket",
+        "laneContract": {
+          "resolvedLane": "library_bound",
+          "packetType": "LibraryBoundPagePacket",
+          "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+          "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+        },
+        "taskLinePresent": true,
+        "outputPathPresent": true,
+        "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "nodeId": "page-pet-balance-peak",
+        "htmlSrc": "pages/pet-balance-peak.html",
+        "supplementaryReads": [],
+        "allowedWritePaths": [
+          "pages/pet-balance-peak.html",
+          "assets/"
+        ],
+        "forbiddenWriteRoots": [
+          "*.design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "finish-readiness-report.json",
+          "restore-contract-report.json",
+          "page-generation-summary.json"
+        ],
+        "toolPolicy": {
+          "todoWriteAllowed": false,
+          "validationScriptsAllowed": false,
+          "previewAllowed": false,
+          "helperScriptsAllowed": false,
+          "designFileWriteAllowed": false,
+          "allowedWritePaths": [
+            "pages/pet-balance-peak.html",
+            "assets/"
+          ]
+        },
+        "skillRuntime": {
+          "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+          "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+          "toolPaths": {
+            "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+            "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+            "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+            "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+            "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+            "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+          },
+          "requiredForPageSubAgent": [
+            "applyHtmlHeadContract",
+            "recordDispatchCompletion"
+          ],
+          "pathInjection": "absolute",
+          "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+          "commandTemplates": {
+            "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          }
+        },
+        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-peak.html",
+        "brandPrefix": "doubao",
+        "aestheticsMode": "library-bound",
+        "toolDisciplineBlockPresent": true,
+        "fillHtmlHeadCommand": null,
+        "headFillMode": "skeleton-first",
+        "viewportMode": "app-shell",
+        "completionSchemaExpected": "full",
+        "restoreFields": null,
+        "restoreContractStatus": null,
+        "restoreCompactPacket": null,
+        "deterministicCommands": null,
+        "sourceAuthorityLock": null,
+        "preDispatchFileHashes": {
+          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        },
+        "contextPreflight": {
+          "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+          "requiredContextFiles": [
+            "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+            "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+            "delivery-quality/page-rendering-quality-gate.md",
+            "delivery-quality/design-artifact-validation.md",
+            "delivery-quality/delivery-evidence-contract.md"
+          ],
+          "optionalContextFiles": [
+            "visual-experience/visual-experience-guidelines.md"
+          ],
+          "passed": true
+        },
+        "pageSliceOnly": true,
+        "requiredFieldsPresent": true,
+        "missingFields": [],
+        "fillHtmlHeadCommandValid": true,
+        "mobileNavigation": {
+          "required": false,
+          "appliesToThisPage": false,
+          "canonicalHtmlIncluded": false,
+          "missingFields": []
+        },
+        "persistedToSummary": true,
+        "taskQueryAudited": false,
+        "proofSource": "summary-only",
+        "largeWorkflowFilesInTaskQuery": null
+      },
+      {
+        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "generatedBy": "build-page-dispatch-manifest.mjs",
+        "packetType": "LibraryBoundPagePacket",
+        "laneContract": {
+          "resolvedLane": "library_bound",
+          "packetType": "LibraryBoundPagePacket",
+          "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+          "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+        },
+        "taskLinePresent": true,
+        "outputPathPresent": true,
+        "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "nodeId": "page-pet-balance-offpeak",
+        "htmlSrc": "pages/pet-balance-offpeak.html",
+        "supplementaryReads": [],
+        "allowedWritePaths": [
+          "pages/pet-balance-offpeak.html",
+          "assets/"
+        ],
+        "forbiddenWriteRoots": [
+          "*.design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "finish-readiness-report.json",
+          "restore-contract-report.json",
+          "page-generation-summary.json"
+        ],
+        "toolPolicy": {
+          "todoWriteAllowed": false,
+          "validationScriptsAllowed": false,
+          "previewAllowed": false,
+          "helperScriptsAllowed": false,
+          "designFileWriteAllowed": false,
+          "allowedWritePaths": [
+            "pages/pet-balance-offpeak.html",
+            "assets/"
+          ]
+        },
+        "skillRuntime": {
+          "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+          "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+          "toolPaths": {
+            "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+            "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+            "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+            "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+            "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+            "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+          },
+          "requiredForPageSubAgent": [
+            "applyHtmlHeadContract",
+            "recordDispatchCompletion"
+          ],
+          "pathInjection": "absolute",
+          "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+          "commandTemplates": {
+            "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          }
+        },
+        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-offpeak.html",
+        "brandPrefix": "doubao",
+        "aestheticsMode": "library-bound",
+        "toolDisciplineBlockPresent": true,
+        "fillHtmlHeadCommand": null,
+        "headFillMode": "skeleton-first",
+        "viewportMode": "app-shell",
+        "completionSchemaExpected": "full",
+        "restoreFields": null,
+        "restoreContractStatus": null,
+        "restoreCompactPacket": null,
+        "deterministicCommands": null,
+        "sourceAuthorityLock": null,
+        "preDispatchFileHashes": {
+          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        },
+        "contextPreflight": {
+          "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+          "requiredContextFiles": [
+            "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+            "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+            "delivery-quality/page-rendering-quality-gate.md",
+            "delivery-quality/design-artifact-validation.md",
+            "delivery-quality/delivery-evidence-contract.md"
+          ],
+          "optionalContextFiles": [
+            "visual-experience/visual-experience-guidelines.md"
+          ],
+          "passed": true
+        },
+        "pageSliceOnly": true,
+        "requiredFieldsPresent": true,
+        "missingFields": [],
+        "fillHtmlHeadCommandValid": true,
+        "mobileNavigation": {
+          "required": false,
+          "appliesToThisPage": false,
+          "canonicalHtmlIncluded": false,
+          "missingFields": []
+        },
+        "persistedToSummary": true,
+        "taskQueryAudited": false,
+        "proofSource": "summary-only",
+        "largeWorkflowFilesInTaskQuery": null
+      },
+      {
+        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "generatedBy": "build-page-dispatch-manifest.mjs",
+        "packetType": "LibraryBoundPagePacket",
+        "laneContract": {
+          "resolvedLane": "library_bound",
+          "packetType": "LibraryBoundPagePacket",
+          "pageRuntimeGuide": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+          "dispatchContract": "intent-workflows/intent-page-library-bound/dispatch-contract.md"
+        },
+        "taskLinePresent": true,
+        "outputPathPresent": true,
+        "sharedTemplate": "intent-workflows/intent-page-library-bound/library-bound-page-runtime.md",
+        "nodeId": "page-pet-settings",
+        "htmlSrc": "pages/pet-settings.html",
+        "supplementaryReads": [],
+        "allowedWritePaths": [
+          "pages/pet-settings.html",
+          "assets/"
+        ],
+        "forbiddenWriteRoots": [
+          "*.design",
+          "runtime-orchestration-summary.json",
+          "validation-report.json",
+          "finish-readiness-report.json",
+          "restore-contract-report.json",
+          "page-generation-summary.json"
+        ],
+        "toolPolicy": {
+          "todoWriteAllowed": false,
+          "validationScriptsAllowed": false,
+          "previewAllowed": false,
+          "helperScriptsAllowed": false,
+          "designFileWriteAllowed": false,
+          "allowedWritePaths": [
+            "pages/pet-settings.html",
+            "assets/"
+          ]
+        },
+        "skillRuntime": {
+          "skillDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design",
+          "deterministicToolDir": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling",
+          "toolPaths": {
+            "applyHtmlHeadContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs",
+            "recordDispatchCompletion": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs",
+            "buildPageDispatchManifest": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\build-page-dispatch-manifest.mjs",
+            "validateDesignWorkspace": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-design-workspace.mjs",
+            "validateFinishReadiness": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs",
+            "validateRestoreContract": "c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-restore-contract.mjs"
+          },
+          "requiredForPageSubAgent": [
+            "applyHtmlHeadContract",
+            "recordDispatchCompletion"
+          ],
+          "pathInjection": "absolute",
+          "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
+          "commandTemplates": {
+            "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          }
+        },
+        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-settings.html",
+        "brandPrefix": "doubao",
+        "aestheticsMode": "library-bound",
+        "toolDisciplineBlockPresent": true,
+        "fillHtmlHeadCommand": null,
+        "headFillMode": "skeleton-first",
+        "viewportMode": "app-shell",
+        "completionSchemaExpected": "full",
+        "restoreFields": null,
+        "restoreContractStatus": null,
+        "restoreCompactPacket": null,
+        "deterministicCommands": null,
+        "sourceAuthorityLock": null,
+        "preDispatchFileHashes": {
+          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        },
+        "contextPreflight": {
+          "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
+          "requiredContextFiles": [
+            "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
+            "shared-runtime/agent-dispatch-runtime/lane-dispatch-index.md",
+            "delivery-quality/page-rendering-quality-gate.md",
+            "delivery-quality/design-artifact-validation.md",
+            "delivery-quality/delivery-evidence-contract.md"
+          ],
+          "optionalContextFiles": [
+            "visual-experience/visual-experience-guidelines.md"
+          ],
+          "passed": true
+        },
+        "pageSliceOnly": true,
+        "requiredFieldsPresent": true,
+        "missingFields": [],
+        "fillHtmlHeadCommandValid": true,
+        "mobileNavigation": {
+          "required": false,
+          "appliesToThisPage": false,
+          "canonicalHtmlIncluded": false,
+          "missingFields": []
+        },
+        "persistedToSummary": true,
+        "taskQueryAudited": false,
+        "proofSource": "summary-only",
+        "largeWorkflowFilesInTaskQuery": null
+      }
+    ],
+    "validationHistory": [],
+    "validationRepairLedger": [],
+    "validationSnapshot": null,
+    "artifactReadinessEvidence": null
+  },
+  "designSource": {
+    "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+    "brandPrefix": "doubao",
+    "libraryIdentity": {
+      "name": "Doubao",
+      "id": "dl_builtin_doubao",
+      "type": "builtin",
+      "version": 0,
+      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao",
+      "versionSource": "metadata.json",
+      "scope": "builtin"
+    },
+    "actualTokenNameReference": {
+      "source": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "themeBlockUsed": ".dark",
+      "semanticTokens": [
+        "--background",
+        "--foreground",
+        "--card",
+        "--card-foreground",
+        "--popover",
+        "--popover-foreground",
+        "--primary",
+        "--primary-foreground",
+        "--secondary",
+        "--secondary-foreground",
+        "--muted",
+        "--muted-foreground",
+        "--accent",
+        "--accent-foreground",
+        "--destructive",
+        "--destructive-foreground",
+        "--border",
+        "--input",
+        "--ring"
+      ],
+      "chartTokens": [
+        "--chart-1",
+        "--chart-2",
+        "--chart-3",
+        "--chart-4",
+        "--chart-5"
+      ],
+      "sidebarTokens": [
+        "--sidebar",
+        "--sidebar-foreground",
+        "--sidebar-primary",
+        "--sidebar-primary-foreground",
+        "--sidebar-accent",
+        "--sidebar-accent-foreground",
+        "--sidebar-border",
+        "--sidebar-ring"
+      ],
+      "typographyTokens": [
+        "--font-sans",
+        "--font-serif",
+        "--font-mono"
+      ],
+      "geometryTokens": [
+        "--radius",
+        "--spacing",
+        "--tracking-normal"
+      ],
+      "shadowTokens": [
+        "--shadow-2xs",
+        "--shadow-xs",
+        "--shadow-sm",
+        "--shadow",
+        "--shadow-md",
+        "--shadow-lg",
+        "--shadow-xl",
+        "--shadow-2xl"
+      ],
+      "prefixedAliasPrefix": "--doubao-",
+      "prefixedAliasCount": 30,
+      "notes": "All shadow tokens have alpha=0 in this library, so elevation must be expressed with border or raised surface color instead of shadow."
+    },
+    "componentPlan": [
+      {
+        "slug": "button",
+        "name": "Button",
+        "category": "action",
+        "previewFile": "preview/component-button.html",
+        "contractFile": "components/button.json",
+        "usedFor": "四项快捷菜单按钮、设置面板保存与取消操作"
+      },
+      {
+        "slug": "app-card",
+        "name": "App Card",
+        "category": "content",
+        "previewFile": "preview/component-app-card.html",
+        "contractFile": "components/app-card.json",
+        "usedFor": "余额气泡与设置面板的卡片外壳"
+      },
+      {
+        "slug": "search-input",
+        "name": "Search Input",
+        "category": "form",
+        "previewFile": "preview/component-search-input.html",
+        "contractFile": "components/search-input.json",
+        "usedFor": "设置面板的 API Key 与刷新间隔输入控件"
+      },
+      {
+        "slug": "sidebar-nav",
+        "name": "Sidebar Navigation",
+        "category": "navigation",
+        "previewFile": "preview/component-sidebar-nav.html",
+        "contractFile": "components/sidebar-nav.json",
+        "usedFor": "悬停展开的四项菜单列表结构与 active 态模型"
+      }
+    ],
+    "tokenFidelity": "strict",
+    "componentConformance": {
+      "mode": "library-preview-derived",
+      "allowedComponents": [
+        "app-card",
+        "button",
+        "chat-composer",
+        "data-table",
+        "search-input",
+        "sidebar-nav"
+      ],
+      "customComponentCssAllowed": false,
+      "crossComponentPatterns": [
+        "single shared --radius derivation",
+        "compact dashboard spacing density",
+        "thin border separation over shadow",
+        "primary blue for main action, muted for secondary, destructive for destructive"
+      ]
+    },
+    "iconAssets": {
+      "source": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\icons",
+      "projectIconDir": "assets/icons/dl_builtin_doubao",
+      "libraryKey": "dl_builtin_doubao",
+      "renderMethod": "css-mask",
+      "pathTemplate": "../assets/icons/{libraryKey}/{name}.svg",
+      "coloringRule": "Icon color must come from the consuming element's token-driven color via css mask + background-color; never hardcode fill values.",
+      "totalCount": 40,
+      "availableNames": [
+        "arrow-down",
+        "arrow-left",
+        "arrow-right",
+        "arrow-up",
+        "box",
+        "check",
+        "chevron-down",
+        "chevron-left",
+        "chevron-right",
+        "chevron-up",
+        "chevrons-down-up",
+        "chevrons-up-down",
+        "circle-alert",
+        "circle-check",
+        "circle-minus",
+        "circle-pause",
+        "circle-play",
+        "circle-plus",
+        "circle-question-mark",
+        "external-link",
+        "file",
+        "folder-open",
+        "folder",
+        "funnel",
+        "grip",
+        "heart",
+        "house",
+        "mail",
+        "map-pin",
+        "message-circle-more",
+        "mouse-pointer-click",
+        "pen-line",
+        "send-horizontal",
+        "star",
+        "tag",
+        "thumbs-down",
+        "thumbs-up",
+        "trash-2",
+        "triangle-alert",
+        "user"
+      ],
+      "gapNotes": "Library has no settings/gear/sliders icon; the settings entry falls back to a Lucide-compatible outline glyph and is disclosed at delivery."
+    },
+    "assets": [
+      {
+        "path": "assets/whale-mascot.png",
+        "role": "mascot",
+        "width": 664,
+        "height": 1024,
+        "transparent": true,
+        "notes": "鲸鱼娘全身立绘，透明底，四边 alpha 为 0"
+      },
+      {
+        "path": "assets/desktop-wallpaper.png",
+        "role": "background",
+        "width": 1920,
+        "height": 1080,
+        "transparent": false,
+        "notes": "深海深色壁纸，亮度均值 19.6，适配暗色主题"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "nodeId": "page-pet-idle",
+      "htmlSrc": "pages/pet-idle.html",
+      "title": "桌面待机 · 鲸鱼常驻",
+      "generationNodeId": "gen-page-pet-idle",
+      "stateRole": "base",
+      "stateGroupId": "dsweber-desktop-pet",
+      "deviceType": "desktop",
+      "viewportMode": "app-shell",
+      "pageType": "showcase",
+      "themeMode": "dark",
+      "layoutRisk": true,
+      "qualityRisks": [
+        "full-bleed desktop stage must not clip or overflow horizontally",
+        "mascot PNG aspect ratio must be preserved at 664x1024",
+        "dark theme contrast against wallpaper must stay at or above 4.5:1"
+      ],
+      "assets": [
+        "assets/desktop-wallpaper.png",
+        "assets/whale-mascot.png"
+      ],
+      "domIdsRequired": [
+        "whale-mascot-hotspot"
+      ],
+      "supplementaryReads": [
+        {
+          "path": "delivery-quality/page-rendering-quality-gate.md",
+          "reason": "layout-risk page needs critical-layout css discipline",
+          "ownerLane": "shared"
+        }
+      ],
+      "allowedWritePaths": [
+        "pages/pet-idle.html"
+      ]
+    },
+    {
+      "nodeId": "page-pet-hover-menu",
+      "htmlSrc": "pages/pet-hover-menu.html",
+      "title": "悬停展开 · 四项快捷菜单",
+      "generationNodeId": "gen-page-pet-hover-menu",
+      "stateRole": "derived",
+      "derivedFromHtmlSrc": "pages/pet-idle.html",
+      "stateGroupId": "dsweber-desktop-pet",
+      "deviceType": "desktop",
+      "viewportMode": "app-shell",
+      "pageType": "task-driven",
+      "themeMode": "dark",
+      "mutableRegions": [
+        "overlayLayer",
+        "whaleStateClass"
+      ],
+      "qualityRisks": [
+        "overlay must preserve the underlying idle stage context",
+        "scrim and every close control need hide-edge interactions",
+        "library has no gear icon; settings entry uses a disclosed fallback glyph"
+      ],
+      "assets": [
+        "assets/desktop-wallpaper.png",
+        "assets/whale-mascot.png"
+      ],
+      "domIdsRequired": [
+        "menu-item-chat",
+        "menu-item-console",
+        "menu-item-topup",
+        "menu-item-settings",
+        "hover-menu-scrim"
+      ],
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-hover-menu.html"
+      ]
+    },
+    {
+      "nodeId": "page-pet-balance-peak",
+      "htmlSrc": "pages/pet-balance-peak.html",
+      "title": "余额气泡 · 峰时计价",
+      "generationNodeId": "gen-page-pet-balance-peak",
+      "stateRole": "derived",
+      "derivedFromHtmlSrc": "pages/pet-idle.html",
+      "stateGroupId": "dsweber-desktop-pet",
+      "deviceType": "desktop",
+      "viewportMode": "app-shell",
+      "pageType": "showcase",
+      "themeMode": "dark",
+      "mutableRegions": [
+        "overlayLayer",
+        "whaleStateClass"
+      ],
+      "qualityRisks": [
+        "balance figure must read as first-level information without extra font weights",
+        "peak/off-peak chip must differ only by declared mutable regions from the off-peak sibling",
+        "bubble must stay anchored to the whale without clipping at the stage edge"
+      ],
+      "assets": [
+        "assets/desktop-wallpaper.png",
+        "assets/whale-mascot.png"
+      ],
+      "domIdsRequired": [
+        "balance-bubble-close",
+        "balance-bubble-scrim",
+        "balance-switch-offpeak"
+      ],
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-balance-peak.html"
+      ]
+    },
+    {
+      "nodeId": "page-pet-balance-offpeak",
+      "htmlSrc": "pages/pet-balance-offpeak.html",
+      "title": "余额气泡 · 谷时计价",
+      "generationNodeId": "gen-page-pet-balance-offpeak",
+      "stateRole": "derived",
+      "derivedFromHtmlSrc": "pages/pet-idle.html",
+      "stateGroupId": "dsweber-desktop-pet",
+      "deviceType": "desktop",
+      "viewportMode": "app-shell",
+      "pageType": "showcase",
+      "themeMode": "dark",
+      "mutableRegions": [
+        "overlayLayer",
+        "whaleStateClass"
+      ],
+      "qualityRisks": [
+        "must stay visually identical to the peak sibling except the peak/off-peak chip and discount copy",
+        "single accent treatment only; no second brand color",
+        "bubble must stay anchored to the whale without clipping at the stage edge"
+      ],
+      "assets": [
+        "assets/desktop-wallpaper.png",
+        "assets/whale-mascot.png"
+      ],
+      "domIdsRequired": [
+        "balance-bubble-close",
+        "balance-bubble-scrim"
+      ],
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-balance-offpeak.html"
+      ]
+    },
+    {
+      "nodeId": "page-pet-settings",
+      "htmlSrc": "pages/pet-settings.html",
+      "title": "设置面板 · 账号与刷新",
+      "generationNodeId": "gen-page-pet-settings",
+      "stateRole": "derived",
+      "derivedFromHtmlSrc": "pages/pet-idle.html",
+      "stateGroupId": "dsweber-desktop-pet",
+      "deviceType": "desktop",
+      "viewportMode": "app-shell",
+      "pageType": "task-driven",
+      "themeMode": "dark",
+      "mutableRegions": [
+        "overlayLayer",
+        "whaleStateClass"
+      ],
+      "qualityRisks": [
+        "form controls must reuse the search-input contract instead of custom component css",
+        "API Key field must be masked and must not display any real credential",
+        "modal scrim plus cancel and back controls all need hide-edge interactions"
+      ],
+      "assets": [
+        "assets/desktop-wallpaper.png",
+        "assets/whale-mascot.png"
+      ],
+      "domIdsRequired": [
+        "settings-panel-scrim",
+        "settings-cancel",
+        "settings-save"
+      ],
+      "supplementaryReads": [],
+      "allowedWritePaths": [
+        "pages/pet-settings.html"
+      ]
+    }
+  ]
+}
