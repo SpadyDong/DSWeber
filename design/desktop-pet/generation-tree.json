@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2026.07.11.0",
-  "designProjectPath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件",
+  "designProjectPath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet",
   "resolvedLane": "library_bound",
   "stateGroupId": "dsweber-desktop-pet",
   "dispatchRule": "sequential-by-dependency; a node may start only after every ancestor output file exists and is non-empty",

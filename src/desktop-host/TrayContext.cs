@@ -380,10 +380,6 @@ namespace DshTray
             }
 
             sb.AppendLine("自动重启次数：" + _supervisor.RestartCount);
-            sb.AppendLine("工作目录：" + _config.WorkingDirectory);
-            sb.AppendLine();
-            sb.AppendLine("命令行：");
-            sb.AppendLine(_supervisor.DisplayCommandLine());
 
             if (!string.IsNullOrEmpty(_supervisor.LastError))
             {

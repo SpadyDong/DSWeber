@@ -138,6 +138,11 @@ namespace DshTray
 
         private void OnBallMouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                _balancePopup.HidePopup();
+                return;
+            }
             if (e.Button != MouseButtons.Left) return;
             _dragging = true;
             _moved = false;
@@ -234,10 +239,10 @@ namespace DshTray
         private void ShowBalance()
         {
             var bounds = Bounds;
-            _balancePopup.ShowLoading(bounds);
+            int session = _balancePopup.ShowLoading(bounds);
             BalanceService.QueryAsync(_appConfig, delegate(BalanceResult r)
             {
-                _balancePopup.ShowResult(r);
+                _balancePopup.ShowResult(session, r);
             });
         }
 

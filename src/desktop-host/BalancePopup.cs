@@ -30,6 +30,7 @@ namespace DshTray
         private readonly Timer _closeTimer;
         private Point _anchor;
         private Rectangle _ballBounds;
+        private int _session;
 
         private HookProc _hookProc;
         private IntPtr _hookHandle = IntPtr.Zero;
@@ -64,19 +65,22 @@ namespace DshTray
             get { return true; }
         }
 
-        public void ShowLoading(Rectangle ballBounds)
+        public int ShowLoading(Rectangle ballBounds)
         {
+            _session++;
             _ballBounds = ballBounds;
             _anchor = new Point(ballBounds.Right, ballBounds.Top + ballBounds.Height / 2);
             Render(BuildLoading());
             _closeTimer.Stop();
             if (!Visible) Show();
             InstallHook();
+            return _session;
         }
 
-        public void ShowResult(BalanceResult result)
+        public void ShowResult(int session, BalanceResult result)
         {
             if (result == null) return;
+            if (session != _session) return;
             Render(result.Ok ? BuildSuccess(result) : BuildError(result));
             if (!Visible) Show();
             InstallHook();
@@ -96,6 +100,7 @@ namespace DshTray
 
         public void HidePopup()
         {
+            _session++;
             _closeTimer.Stop();
             RemoveHook();
             if (Visible) Hide();

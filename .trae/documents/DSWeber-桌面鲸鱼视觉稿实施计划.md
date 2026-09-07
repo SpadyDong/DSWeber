@@ -28,7 +28,7 @@ DSWeber 是一款 Windows 桌面悬浮宠物应用：桌面最上层常驻一只
 ### 3.1 项目结构
 
 ```
-d:\WorkBuddy\DSWeber\DSWeber-桌面挂件\
+d:\WorkBuddy\DSWeber\design\desktop-pet\
 ├── DSWeber-桌面挂件.design       # canvas 入口
 ├── generation-tree.json
 ├── partials\
@@ -160,7 +160,7 @@ const isPeak = (hour >= 9 && hour < 12) || (hour >= 14 && hour < 18);
 | 设置项 | API Key + 开机自启 + 余额刷新间隔 | 用户确认 |
 | 充值 URL | `https://platform.deepseek.com/top_up` | 用户确认 |
 | 页面数量 | 5 个状态页，不做状态总览页 | 计划决策（总览页易滑向"设计说明书"而非产品页） |
-| 项目目录名 | `DSWeber-桌面挂件` | 计划决策 |
+| 项目目录 | `design/desktop-pet` | 仓库分层决策 |
 
 ## 五、执行顺序
 

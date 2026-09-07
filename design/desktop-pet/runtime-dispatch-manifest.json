@@ -76,15 +76,15 @@
         "pathInjection": "absolute",
         "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
         "commandTemplates": {
-          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
       "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html",
       "brandPrefix": "doubao",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
-      "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
+      "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
       "headFillMode": "skeleton-first",
       "viewportMode": "app-shell",
       "completionSchemaExpected": "full",
@@ -182,11 +182,11 @@
         "pathInjection": "absolute",
         "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
         "commandTemplates": {
-          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
       "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-hover-menu.html",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-hover-menu.html",
       "brandPrefix": "doubao",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
@@ -288,11 +288,11 @@
         "pathInjection": "absolute",
         "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
         "commandTemplates": {
-          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
       "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-peak.html",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-peak.html",
       "brandPrefix": "doubao",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
@@ -394,11 +394,11 @@
         "pathInjection": "absolute",
         "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
         "commandTemplates": {
-          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
       "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-balance-offpeak.html",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-offpeak.html",
       "brandPrefix": "doubao",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
@@ -500,11 +500,11 @@
         "pathInjection": "absolute",
         "pathContract": "Do not use {SKILL_DIR} placeholders inside Page Sub-Agent packets; use toolPaths.* absolute paths.",
         "commandTemplates": {
-          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
+          "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
       "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\DSWeber-桌面挂件\\pages\\pet-settings.html",
+      "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-settings.html",
       "brandPrefix": "doubao",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,

@@ -1,12 +1,11 @@
 # 编译产物
-dsh-tray/bin/*.exe
-dsh-tray/bin/*.pdb
+dist/*.exe
+dist/*.pdb
 
 # 本机配置（含绝对路径与 ApiKey）
-dsh-tray/bin/config.json
+dist/config.json
 
 # 临时验证 / 诊断脚本与输出
-dsh-tray/v*.ps1
 _diag.txt
 
 # 会话与中间产物
