@@ -6,14 +6,14 @@
       "type": "page",
       "version": 1,
       "createdAt": 1788252807691,
-      "devMetadata": {
-        "htmlSrc": "pages/pet-idle.html",
-        "interactions": []
-      },
       "canvasData": {
         "x": 0,
         "y": 0,
         "group": 0
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/pet-idle.html",
+        "interactions": []
       }
     },
     {
@@ -22,14 +22,14 @@
       "type": "page",
       "version": 1,
       "createdAt": 1788252807691,
+      "canvasData": {
+        "x": 480,
+        "y": 0,
+        "group": 0
+      },
       "devMetadata": {
         "htmlSrc": "pages/pet-hover-menu.html",
         "interactions": []
-      },
-      "canvasData": {
-        "x": 0,
-        "y": 0,
-        "group": 0
       }
     },
     {
@@ -38,14 +38,14 @@
       "type": "page",
       "version": 1,
       "createdAt": 1788252807691,
+      "canvasData": {
+        "x": 960,
+        "y": 0,
+        "group": 0
+      },
       "devMetadata": {
         "htmlSrc": "pages/pet-balance-peak.html",
         "interactions": []
-      },
-      "canvasData": {
-        "x": 0,
-        "y": 0,
-        "group": 0
       }
     },
     {
@@ -54,14 +54,14 @@
       "type": "page",
       "version": 1,
       "createdAt": 1788252807691,
+      "canvasData": {
+        "x": 1440,
+        "y": 0,
+        "group": 0
+      },
       "devMetadata": {
         "htmlSrc": "pages/pet-balance-offpeak.html",
         "interactions": []
-      },
-      "canvasData": {
-        "x": 0,
-        "y": 0,
-        "group": 0
       }
     },
     {
@@ -70,14 +70,14 @@
       "type": "page",
       "version": 1,
       "createdAt": 1788252807691,
+      "canvasData": {
+        "x": 1920,
+        "y": 0,
+        "group": 0
+      },
       "devMetadata": {
         "htmlSrc": "pages/pet-settings.html",
         "interactions": []
-      },
-      "canvasData": {
-        "x": 0,
-        "y": 0,
-        "group": 0
       }
     },
     {
@@ -86,12 +86,16 @@
       "type": "image",
       "version": 1,
       "createdAt": 1788252807691,
-      "devMetadata": {
-        "imageSrc": "assets/whale-mascot.png"
-      },
       "canvasData": {
         "x": 0,
-        "y": 0
+        "y": 373,
+        "naturalSize": {
+          "width": 664,
+          "height": 1024
+        }
+      },
+      "devMetadata": {
+        "imageSrc": "assets/whale-mascot.png"
       }
     },
     {
@@ -100,12 +104,16 @@
       "type": "image",
       "version": 1,
       "createdAt": 1788252807691,
+      "canvasData": {
+        "x": 480,
+        "y": 373,
+        "naturalSize": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
       "devMetadata": {
         "imageSrc": "assets/desktop-wallpaper.png"
-      },
-      "canvasData": {
-        "x": 0,
-        "y": 0
       }
     }
   ],
@@ -114,11 +122,11 @@
     "deviceType": "desktop",
     "projectName": "DSWeber 桌面挂件",
     "designLibrary": {
-      "name": "Doubao",
-      "id": "dl_builtin_doubao",
+      "name": "Apple",
+      "id": "dl_builtin_apple",
       "version": 0,
       "scope": "builtin",
-      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao",
+      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple",
       "versionSource": "metadata.json"
     }
   }

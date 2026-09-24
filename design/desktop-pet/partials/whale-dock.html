@@ -1,0 +1,144 @@
+<!-- ======================================================================
+@partial: whale-dock
+@node: gen-whale-dock
+@desc: 鲸鱼挂件本体 —— 三层视觉：椭圆柔光投影池 → 鲸鱼立绘 → 悬停热区/状态 chip。
+       动效：whale-float 上下 6px 缓动循环(4.5s) + 投影同步缩放，
+       全程包裹 prefers-reduced-motion 保护。
+       挂件是整页唯一视觉锚点，浮层一律从其锚轨向左上展开。
+@mutableSlots: whaleStateClass / overlayLayer
+======================================================================= -->
+
+<style id="whale-critical-layout">
+  /* ---- @region: whale-anchor-rail ----
+     锚轨：决定挂件几何与浮层定位原点，五页零漂移。
+     @slot: whaleStateClass —— data-whale-state: idle / engaged */
+  .whale-dock {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* ---- @region: whale-shadow-pool ----
+     身下椭圆柔光投影：--primary 低透明 + blur，随呼吸同步缩放 */
+  .whale-shadow-pool {
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 216px;
+    height: 42px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--apple-primary) 26%, transparent);
+    filter: blur(18px);
+    animation: whale-shadow 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  /* ---- @region: whale-mascot-figure ---- */
+  .whale-figure {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    transform-origin: 50% 100%;
+    animation: whale-float 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  .whale-figure img {
+    height: 440px;
+    width: auto;
+    max-width: none;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* 唤起态：暂停呼吸，身体上浮定格，等待指令 */
+  .whale-dock[data-whale-state="engaged"] .whale-figure {
+    animation-play-state: paused;
+    transform: translateY(-6px);
+  }
+  .whale-dock[data-whale-state="engaged"] .whale-shadow-pool {
+    animation-play-state: paused;
+    transform: translateX(-50%) scale(0.93);
+    opacity: 0.75;
+  }
+
+  /* ---- @region: whale-breathing-motion ---- */
+  @keyframes whale-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes whale-shadow {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    50% { transform: translateX(-50%) scale(0.93); opacity: 0.72; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .whale-figure,
+    .whale-shadow-pool { animation: none; }
+  }
+
+  /* ---- @region: whale-hover-hotspot ----
+     透明热区覆盖立绘，负责 hover 唤醒与键盘聚焦 */
+  .whale-hotspot {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 240px;
+    height: 420px;
+    transform: translateX(-50%);
+    padding: 0;
+    border: 0;
+    border-radius: 46% 46% 42% 42%;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+  }
+  .whale-hotspot:focus-visible {
+    outline: 2px solid var(--apple-ring);
+    outline-offset: 4px;
+  }
+
+  /* ---- @region: whale-connection-status-chip ----
+     贴在挂件肩上的连接状态，永远轻量不抢戏 */
+  .whale-status-chip {
+    position: absolute;
+    top: 4%;
+    right: -4%;
+    z-index: 2;
+  }
+
+  /* ---- @slot: overlayLayer ----
+     浮层锚点：相对挂件定位，向左上展开 */
+  .whale-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .whale-overlay > * { pointer-events: auto; }
+</style>
+
+<!-- @region: whale-anchor-rail / @slot: whaleStateClass -->
+<div class="whale-dock" data-whale-state="idle">
+
+  <!-- @region: whale-shadow-pool -->
+  <div class="whale-shadow-pool" aria-hidden="true"></div>
+
+  <!-- @region: whale-mascot-figure -->
+  <figure class="whale-figure">
+    <img src="../assets/whale-mascot.png" alt="DSWeber 鲸鱼挂件" width="664" height="1024" draggable="false">
+  </figure>
+
+  <!-- @region: whale-hover-hotspot -->
+  <button id="whale-mascot-hotspot" class="whale-hotspot" type="button"
+          aria-label="鲸鱼挂件：悬停展开快捷菜单，点击查看余额"></button>
+
+  <!-- @region: whale-connection-status-chip -->
+  <span class="whale-status-chip glass-surface glass-capsule glass-chip">
+    <i class="chip-dot" aria-hidden="true"></i>已连接
+  </span>
+
+  <!-- @slot: overlayLayer —— 派生页在此注入菜单/气泡 -->
+  <div class="whale-overlay" data-slot="overlayLayer"><!-- @slot: overlayLayer --></div>
+
+</div>

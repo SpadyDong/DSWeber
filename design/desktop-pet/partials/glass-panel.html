@@ -1,0 +1,198 @@
+<!-- ======================================================================
+@partial: glass-panel
+@node: gen-glass-panel
+@desc: 深海毛玻璃材质配方 —— 所有浮层（面板 / 气泡 / 菜单 / 状态 pill）共用
+       同一套玻璃工艺：backdrop blur + saturate、1px 内描边、顶部高光、双层投影。
+       颜色只允许 var(--apple-*) 语义 token 的 color-mix 派生，禁止硬编码色值。
+@mutableSlots: glassPanelTitle / glassPanelBody / glassPanelFooter
+======================================================================= -->
+
+<style id="glass-critical-layout">
+  /* ---- @region: glass-surface-recipe ----
+     唯一玻璃配方，全项目浮层复用，不得另起炉灶 */
+  .glass-surface {
+    background: color-mix(in srgb, var(--apple-popover) 66%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    backdrop-filter: blur(22px) saturate(180%);
+    border: 1px solid color-mix(in srgb, var(--apple-border) 62%, transparent);
+    box-shadow:
+      var(--shadow-xl),
+      inset 0 1px 0 color-mix(in srgb, var(--apple-foreground) 9%, transparent);
+  }
+
+  /* ---- @region: glass-radius-model ----
+     面板/气泡用 --radius 放大档，胶囊类用 999px 全圆角 */
+  .glass-panel { border-radius: calc(var(--radius) * 1.5); }
+  .glass-bubble { border-radius: calc(var(--radius) * 1.75); }
+  .glass-capsule { border-radius: 999px; }
+
+  /* ---- @region: glass-panel-shell ----
+     @slots: glassPanelTitle / glassPanelBody / glassPanelFooter */
+  .glass-panel-shell {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 6);
+  }
+  .glass-panel-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .glass-panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 4);
+    font-size: 13px;
+    color: var(--apple-muted-foreground);
+  }
+  .glass-panel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: calc(var(--spacing) * 2.5);
+  }
+
+  /* ---- @region: glass-bubble-shell ----
+     从鲸鱼头顶"浮出水面"的信息气泡，带指向挂件的尾翼 */
+  .glass-bubble-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    padding: calc(var(--spacing) * 5) calc(var(--spacing) * 5) calc(var(--spacing) * 4);
+    text-align: center;
+  }
+  .glass-bubble-shell::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    width: 14px;
+    height: 14px;
+    transform: translateX(-50%) rotate(45deg);
+    background: color-mix(in srgb, var(--apple-popover) 66%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--apple-border) 62%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--apple-border) 62%, transparent);
+  }
+
+  /* ---- @region: glass-menu-shell ----
+     右键/悬停快捷菜单：macOS 语境菜单式竖排胶囊列 */
+  .glass-menu-shell {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 1);
+    padding: calc(var(--spacing) * 1.5);
+  }
+  .glass-menu-item {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 2.5);
+    height: 40px;
+    padding: 0 calc(var(--spacing) * 2.5) 0 calc(var(--spacing) * 1.5);
+    border-radius: 999px;
+    color: var(--apple-foreground);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  }
+  /* System Blue 高亮：整枚胶囊被点亮 */
+  .glass-menu-item:hover,
+  .glass-menu-item:focus-visible {
+    background: var(--apple-primary);
+    color: var(--apple-primary-foreground);
+    outline: none;
+  }
+  .glass-menu-item:active { transform: scale(0.97); }
+  .glass-menu-item .mi-icon {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--apple-secondary) 72%, transparent);
+    transition: background-color 0.16s ease;
+  }
+  .glass-menu-item .mi-icon [data-icon],
+  .glass-menu-item .mi-icon svg { width: 15px; height: 15px; }
+  .glass-menu-item:hover .mi-icon,
+  .glass-menu-item:focus-visible .mi-icon {
+    background: color-mix(in srgb, var(--apple-primary-foreground) 22%, transparent);
+  }
+  .glass-menu-item .mi-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .glass-menu-item .mi-sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--apple-muted-foreground);
+    transition: color 0.16s ease;
+  }
+  .glass-menu-item:hover .mi-sub,
+  .glass-menu-item:focus-visible .mi-sub {
+    color: color-mix(in srgb, var(--apple-primary-foreground) 74%, transparent);
+  }
+  .glass-menu-item .mi-trail {
+    margin-left: auto;
+    width: 14px;
+    height: 14px;
+    opacity: 0.55;
+  }
+
+  /* ---- @region: glass-divider ---- */
+  .glass-divider {
+    height: 1px;
+    margin: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
+    background: color-mix(in srgb, var(--apple-border) 55%, transparent);
+    border: 0;
+  }
+
+  /* ---- @region: glass-status-chip ---- */
+  .glass-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 1.5);
+    height: 26px;
+    padding: 0 calc(var(--spacing) * 2.5);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--apple-foreground);
+    white-space: nowrap;
+  }
+  .chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--apple-success);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--apple-success) 80%, transparent);
+  }
+
+  /* ---- @region: glass-focus-ring-model ---- */
+  .glass-focusable:focus-visible {
+    outline: 2px solid var(--apple-ring);
+    outline-offset: 2px;
+  }
+
+  /* ---- 浮层入场：scale 0.94→1 + 淡入 + Y 轴微升，方向朝上 ---- */
+  @keyframes panel-emerge {
+    from { opacity: 0; transform: translateY(10px) scale(0.94); filter: blur(6px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+  .glass-emerge { animation: panel-emerge 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .glass-emerge { animation: none; }
+  }
+</style>
+
+<!-- @region: glass-panel-shell 模板（设置面板等复用）
+     @slots: glassPanelTitle / glassPanelBody / glassPanelFooter -->
+<template id="tpl-glass-panel-shell">
+  <section class="glass-surface glass-panel glass-panel-shell glass-emerge" role="dialog">
+    <h2 class="glass-panel-title"><!-- @slot: glassPanelTitle --></h2>
+    <div class="glass-panel-body"><!-- @slot: glassPanelBody --></div>
+    <footer class="glass-panel-footer"><!-- @slot: glassPanelFooter --></footer>
+  </section>
+</template>

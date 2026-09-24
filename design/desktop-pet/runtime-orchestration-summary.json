@@ -22,12 +22,12 @@
       "caseFamily": "library_bound",
       "userGoal": "为 DSWeber 桌面鲸鱼挂件产出高保真视觉稿，覆盖待机、悬停菜单、峰谷余额气泡与设置面板五个状态",
       "deliverableForm": "high-fidelity static HTML visual spec",
-      "designAuthority": "Doubao design library tokens",
+      "designAuthority": "Apple design library tokens",
       "runtimeExpectation": "not-a-runnable-app",
       "confirmedByUser": true
     },
     "selectedIntentWorkflowRead": true,
-    "contextReadScope": "library_bound lane runtime contracts + Doubao library ingestion evidence only; no other intent workflow runbook loaded",
+    "contextReadScope": "library_bound lane runtime contracts + Apple library ingestion evidence only; no other intent workflow runbook loaded",
     "contextRequirementsLoaded": [
       {
         "path": "shared-runtime/runtime-boundaries/lane-runtime-contracts.md",
@@ -77,17 +77,17 @@
         "readStatus": "loaded"
       },
       {
-        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\metadata.json",
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple\\metadata.json",
         "reason": "library identity",
         "readStatus": "loaded"
       },
       {
-        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple\\colors_and_type.css",
         "reason": "actual token name reference",
         "readStatus": "loaded"
       },
       {
-        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\components\\index.json",
+        "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple\\components\\index.json",
         "reason": "component plan source",
         "readStatus": "loaded"
       },
@@ -181,7 +181,7 @@
       "footerRegion": "taskbar-chrome"
     },
     "sourceAuthorityLock": {
-      "visualAuthority": "Doubao design library tokens (dl_builtin_doubao)",
+      "visualAuthority": "Apple design library tokens (dl_builtin_apple)",
       "mayOverrideVisualAuthority": false,
       "lockedBeforeDispatch": true
     },
@@ -207,7 +207,7 @@
       {
         "checkpointId": "vq-implementation-strategy",
         "dimension": "implementation-strategy",
-        "expected": "只使用豆包 token 与 Tailwind utilities，不新增自定义组件 CSS；关键布局用 critical-layout 局部样式块固化",
+        "expected": "只使用 Apple 语义 token（--apple-* 前缀别名）与 Apple 组件 CSS，不新增自定义组件 CSS；关键布局用 critical-layout 局部样式块固化",
         "evidenceTarget": "pages/pet-idle.html 的 style#critical-layout"
       }
     ],
@@ -480,7 +480,7 @@
     },
     "dispatchPreflightManifest": [
       {
-        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "recorded_at": "2026-09-20T08:14:29.010Z",
         "generatedBy": "build-page-dispatch-manifest.mjs",
         "packetType": "LibraryBoundPagePacket",
         "laneContract": {
@@ -545,12 +545,12 @@
             "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
           }
         },
-        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
         "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html",
-        "brandPrefix": "doubao",
+        "brandPrefix": "apple",
         "aestheticsMode": "library-bound",
         "toolDisciplineBlockPresent": true,
-        "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
+        "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"apple\"",
         "headFillMode": "skeleton-first",
         "viewportMode": "app-shell",
         "completionSchemaExpected": "full",
@@ -560,7 +560,7 @@
         "deterministicCommands": null,
         "sourceAuthorityLock": null,
         "preDispatchFileHashes": {
-          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+          "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
         },
         "contextPreflight": {
           "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -592,7 +592,7 @@
         "largeWorkflowFilesInTaskQuery": null
       },
       {
-        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "recorded_at": "2026-09-20T08:14:29.010Z",
         "generatedBy": "build-page-dispatch-manifest.mjs",
         "packetType": "LibraryBoundPagePacket",
         "laneContract": {
@@ -651,9 +651,9 @@
             "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
           }
         },
-        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
         "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-hover-menu.html",
-        "brandPrefix": "doubao",
+        "brandPrefix": "apple",
         "aestheticsMode": "library-bound",
         "toolDisciplineBlockPresent": true,
         "fillHtmlHeadCommand": null,
@@ -666,7 +666,7 @@
         "deterministicCommands": null,
         "sourceAuthorityLock": null,
         "preDispatchFileHashes": {
-          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+          "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
         },
         "contextPreflight": {
           "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -698,7 +698,7 @@
         "largeWorkflowFilesInTaskQuery": null
       },
       {
-        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "recorded_at": "2026-09-20T08:14:29.010Z",
         "generatedBy": "build-page-dispatch-manifest.mjs",
         "packetType": "LibraryBoundPagePacket",
         "laneContract": {
@@ -757,9 +757,9 @@
             "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
           }
         },
-        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
         "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-peak.html",
-        "brandPrefix": "doubao",
+        "brandPrefix": "apple",
         "aestheticsMode": "library-bound",
         "toolDisciplineBlockPresent": true,
         "fillHtmlHeadCommand": null,
@@ -772,7 +772,7 @@
         "deterministicCommands": null,
         "sourceAuthorityLock": null,
         "preDispatchFileHashes": {
-          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+          "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
         },
         "contextPreflight": {
           "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -804,7 +804,7 @@
         "largeWorkflowFilesInTaskQuery": null
       },
       {
-        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "recorded_at": "2026-09-20T08:14:29.010Z",
         "generatedBy": "build-page-dispatch-manifest.mjs",
         "packetType": "LibraryBoundPagePacket",
         "laneContract": {
@@ -863,9 +863,9 @@
             "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
           }
         },
-        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
         "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-offpeak.html",
-        "brandPrefix": "doubao",
+        "brandPrefix": "apple",
         "aestheticsMode": "library-bound",
         "toolDisciplineBlockPresent": true,
         "fillHtmlHeadCommand": null,
@@ -878,7 +878,7 @@
         "deterministicCommands": null,
         "sourceAuthorityLock": null,
         "preDispatchFileHashes": {
-          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+          "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
         },
         "contextPreflight": {
           "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -910,7 +910,7 @@
         "largeWorkflowFilesInTaskQuery": null
       },
       {
-        "recorded_at": "2026-09-01T13:18:24.777Z",
+        "recorded_at": "2026-09-20T08:14:29.010Z",
         "generatedBy": "build-page-dispatch-manifest.mjs",
         "packetType": "LibraryBoundPagePacket",
         "laneContract": {
@@ -969,9 +969,9 @@
             "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
           }
         },
-        "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+        "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
         "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-settings.html",
-        "brandPrefix": "doubao",
+        "brandPrefix": "apple",
         "aestheticsMode": "library-bound",
         "toolDisciplineBlockPresent": true,
         "fillHtmlHeadCommand": null,
@@ -984,7 +984,7 @@
         "deterministicCommands": null,
         "sourceAuthorityLock": null,
         "preDispatchFileHashes": {
-          "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+          "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
         },
         "contextPreflight": {
           "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -1022,19 +1022,19 @@
     "artifactReadinessEvidence": null
   },
   "designSource": {
-    "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
-    "brandPrefix": "doubao",
+    "cssFilePath": "design-styles/apple/colors_and_type.css",
+    "brandPrefix": "apple",
     "libraryIdentity": {
-      "name": "Doubao",
-      "id": "dl_builtin_doubao",
+      "name": "Apple",
+      "id": "dl_builtin_apple",
       "type": "builtin",
       "version": 0,
-      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao",
+      "path": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple",
       "versionSource": "metadata.json",
       "scope": "builtin"
     },
     "actualTokenNameReference": {
-      "source": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "source": "design-styles/apple/colors_and_type.css",
       "themeBlockUsed": ".dark",
       "semanticTokens": [
         "--background",
@@ -1053,9 +1053,13 @@
         "--accent-foreground",
         "--destructive",
         "--destructive-foreground",
+        "--success",
+        "--success-foreground",
         "--border",
         "--input",
-        "--ring"
+        "--ring",
+        "--icon",
+        "--icon-muted"
       ],
       "chartTokens": [
         "--chart-1",
@@ -1094,41 +1098,41 @@
         "--shadow-xl",
         "--shadow-2xl"
       ],
-      "prefixedAliasPrefix": "--doubao-",
-      "prefixedAliasCount": 30,
-      "notes": "All shadow tokens have alpha=0 in this library, so elevation must be expressed with border or raised surface color instead of shadow."
+      "prefixedAliasPrefix": "--apple-",
+      "prefixedAliasCount": 34,
+      "notes": "Shadows are subtle hairline-to-modal elevations that deepen in dark mode; dark --primary resolves to brand-400 (#2e8dff) with a near-black foreground."
     },
     "componentPlan": [
       {
         "slug": "button",
         "name": "Button",
-        "category": "action",
+        "category": "actions",
         "previewFile": "preview/component-button.html",
         "contractFile": "components/button.json",
         "usedFor": "四项快捷菜单按钮、设置面板保存与取消操作"
       },
       {
-        "slug": "app-card",
-        "name": "App Card",
-        "category": "content",
-        "previewFile": "preview/component-app-card.html",
-        "contractFile": "components/app-card.json",
+        "slug": "card",
+        "name": "Card",
+        "category": "surfaces",
+        "previewFile": "preview/component-card.html",
+        "contractFile": "components/card.json",
         "usedFor": "余额气泡与设置面板的卡片外壳"
       },
       {
-        "slug": "search-input",
-        "name": "Search Input",
-        "category": "form",
-        "previewFile": "preview/component-search-input.html",
-        "contractFile": "components/search-input.json",
+        "slug": "input",
+        "name": "Input",
+        "category": "forms",
+        "previewFile": "preview/component-input.html",
+        "contractFile": "components/input.json",
         "usedFor": "设置面板的 API Key 与刷新间隔输入控件"
       },
       {
-        "slug": "sidebar-nav",
-        "name": "Sidebar Navigation",
+        "slug": "navigation",
+        "name": "Navigation",
         "category": "navigation",
-        "previewFile": "preview/component-sidebar-nav.html",
-        "contractFile": "components/sidebar-nav.json",
+        "previewFile": "preview/component-navigation.html",
+        "contractFile": "components/navigation.json",
         "usedFor": "悬停展开的四项菜单列表结构与 active 态模型"
       }
     ],
@@ -1136,25 +1140,26 @@
     "componentConformance": {
       "mode": "library-preview-derived",
       "allowedComponents": [
-        "app-card",
         "button",
-        "chat-composer",
-        "data-table",
-        "search-input",
-        "sidebar-nav"
+        "card",
+        "comparison-table",
+        "input",
+        "navigation",
+        "product-grid"
       ],
       "customComponentCssAllowed": false,
       "crossComponentPatterns": [
-        "single shared --radius derivation",
-        "compact dashboard spacing density",
-        "thin border separation over shadow",
-        "primary blue for main action, muted for secondary, destructive for destructive"
+        "Whitespace carries hierarchy more than separators or color blocks.",
+        "Rounded-full actions and large radii soften otherwise minimal surfaces.",
+        "Copy stays concise and often uses editorial commerce phrasing.",
+        "Accent color is concentrated in CTA moments rather than background coverage.",
+        "Photography-first layouts keep the UI deferential to content."
       ]
     },
     "iconAssets": {
-      "source": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\icons",
-      "projectIconDir": "assets/icons/dl_builtin_doubao",
-      "libraryKey": "dl_builtin_doubao",
+      "source": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Apple\\assets\\icons",
+      "projectIconDir": "assets/icons/dl_builtin_apple",
+      "libraryKey": "dl_builtin_apple",
       "renderMethod": "css-mask",
       "pathTemplate": "../assets/icons/{libraryKey}/{name}.svg",
       "coloringRule": "Icon color must come from the consuming element's token-driven color via css mask + background-color; never hardcode fill values.",
@@ -1381,7 +1386,7 @@
         "whaleStateClass"
       ],
       "qualityRisks": [
-        "form controls must reuse the search-input contract instead of custom component css",
+        "form controls must reuse the input contract instead of custom component css",
         "API Key field must be masked and must not display any real credential",
         "modal scrim plus cancel and back controls all need hide-edge interactions"
       ],

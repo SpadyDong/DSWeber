@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-01T13:18:24.799Z",
+  "generated_at": "2026-09-20T08:14:29.018Z",
   "source": "build-page-dispatch-manifest.mjs",
   "mode": "library-bound",
   "summary_path": "runtime-orchestration-summary.json",
@@ -14,7 +14,7 @@
   },
   "dispatchPreflightManifest": [
     {
-      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "recorded_at": "2026-09-20T08:14:29.010Z",
       "generatedBy": "build-page-dispatch-manifest.mjs",
       "packetType": "LibraryBoundPagePacket",
       "laneContract": {
@@ -79,12 +79,12 @@
           "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-idle\" --html-src=\"pages/pet-idle.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
-      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
       "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html",
-      "brandPrefix": "doubao",
+      "brandPrefix": "apple",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
-      "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"doubao\"",
+      "fillHtmlHeadCommand": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\apply-html-head-contract.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-idle.html\" --title=\"桌面待机 · 鲸鱼常驻\" --lang=\"zh-CN\" --prefix=\"apple\"",
       "headFillMode": "skeleton-first",
       "viewportMode": "app-shell",
       "completionSchemaExpected": "full",
@@ -94,7 +94,7 @@
       "deterministicCommands": null,
       "sourceAuthorityLock": null,
       "preDispatchFileHashes": {
-        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
       },
       "contextPreflight": {
         "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -126,7 +126,7 @@
       "largeWorkflowFilesInTaskQuery": null
     },
     {
-      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "recorded_at": "2026-09-20T08:14:29.010Z",
       "generatedBy": "build-page-dispatch-manifest.mjs",
       "packetType": "LibraryBoundPagePacket",
       "laneContract": {
@@ -185,9 +185,9 @@
           "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-hover-menu\" --html-src=\"pages/pet-hover-menu.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
-      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
       "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-hover-menu.html",
-      "brandPrefix": "doubao",
+      "brandPrefix": "apple",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
       "fillHtmlHeadCommand": null,
@@ -200,7 +200,7 @@
       "deterministicCommands": null,
       "sourceAuthorityLock": null,
       "preDispatchFileHashes": {
-        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
       },
       "contextPreflight": {
         "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -232,7 +232,7 @@
       "largeWorkflowFilesInTaskQuery": null
     },
     {
-      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "recorded_at": "2026-09-20T08:14:29.010Z",
       "generatedBy": "build-page-dispatch-manifest.mjs",
       "packetType": "LibraryBoundPagePacket",
       "laneContract": {
@@ -291,9 +291,9 @@
           "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-peak\" --html-src=\"pages/pet-balance-peak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
-      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
       "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-peak.html",
-      "brandPrefix": "doubao",
+      "brandPrefix": "apple",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
       "fillHtmlHeadCommand": null,
@@ -306,7 +306,7 @@
       "deterministicCommands": null,
       "sourceAuthorityLock": null,
       "preDispatchFileHashes": {
-        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
       },
       "contextPreflight": {
         "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -338,7 +338,7 @@
       "largeWorkflowFilesInTaskQuery": null
     },
     {
-      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "recorded_at": "2026-09-20T08:14:29.010Z",
       "generatedBy": "build-page-dispatch-manifest.mjs",
       "packetType": "LibraryBoundPagePacket",
       "laneContract": {
@@ -397,9 +397,9 @@
           "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-balance-offpeak\" --html-src=\"pages/pet-balance-offpeak.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
-      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
       "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-balance-offpeak.html",
-      "brandPrefix": "doubao",
+      "brandPrefix": "apple",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
       "fillHtmlHeadCommand": null,
@@ -412,7 +412,7 @@
       "deterministicCommands": null,
       "sourceAuthorityLock": null,
       "preDispatchFileHashes": {
-        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
       },
       "contextPreflight": {
         "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
@@ -444,7 +444,7 @@
       "largeWorkflowFilesInTaskQuery": null
     },
     {
-      "recorded_at": "2026-09-01T13:18:24.777Z",
+      "recorded_at": "2026-09-20T08:14:29.010Z",
       "generatedBy": "build-page-dispatch-manifest.mjs",
       "packetType": "LibraryBoundPagePacket",
       "laneContract": {
@@ -503,9 +503,9 @@
           "recordDispatchCompletion": "node \"c:\\Users\\89887\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\record-dispatch-completion.mjs\" \"d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\" --node-id=\"page-pet-settings\" --html-src=\"pages/pet-settings.html\" --status=completed --changed-files=<comma-separated-project-relative-files> --trace-digest=<main-agent-runtime-trace-digest> --tool-ledger-json=<tool-ledger-json-or-file>"
         }
       },
-      "cssFilePath": "c:\\Users\\89887\\.trae-cn\\design_libraries\\Doubao\\colors_and_type.css",
+      "cssFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\design-styles\\apple\\colors_and_type.css",
       "htmlFilePath": "d:\\WorkBuddy\\DSWeber\\design\\desktop-pet\\pages\\pet-settings.html",
-      "brandPrefix": "doubao",
+      "brandPrefix": "apple",
       "aestheticsMode": "library-bound",
       "toolDisciplineBlockPresent": true,
       "fillHtmlHeadCommand": null,
@@ -518,7 +518,7 @@
       "deterministicCommands": null,
       "sourceAuthorityLock": null,
       "preDispatchFileHashes": {
-        "DSWeber-桌面挂件.design": "fed9809acd4cb6925709749bf681056b6cc824efddf1acd71f98fafee02c31ee"
+        "DSWeber-桌面挂件.design": "fa9fde25ed5a2c35d874d6b2fbdbddee73412a0c3e01d479965a6ac116ecc060"
       },
       "contextPreflight": {
         "workflowPath": "intent-workflows/intent-page-library-bound/INTENT_WORKFLOW.md",
