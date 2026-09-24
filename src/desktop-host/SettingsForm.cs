@@ -161,7 +161,8 @@ namespace DshTray
                 ShowBall = _existing != null && _existing.ShowBall,
                 BallX = _existing != null ? _existing.BallX : 0,
                 BallY = _existing != null ? _existing.BallY : 0,
-                ApiKey = _apiKey.Text.Trim()
+                ApiKey = _apiKey.Text.Trim(),
+                Alarms = CloneAlarms(_existing != null ? _existing.Alarms : null)
             };
 
             var errors = new List<string>();
@@ -189,6 +190,18 @@ namespace DshTray
             Result = cfg;
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private static List<AlarmItem> CloneAlarms(List<AlarmItem> source)
+        {
+            var list = new List<AlarmItem>();
+            if (source == null) return list;
+            foreach (var a in source)
+            {
+                if (a == null) continue;
+                list.Add(new AlarmItem { Enabled = a.Enabled, Time = a.Time, Message = a.Message });
+            }
+            return list;
         }
     }
 }

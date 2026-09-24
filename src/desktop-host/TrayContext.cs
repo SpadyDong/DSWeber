@@ -25,6 +25,7 @@ namespace DshTray
         private readonly ToolStripMenuItem _startStopItem;
         private readonly ToolStripMenuItem _autoStartItem;
         private readonly ToolStripMenuItem _showBallItem;
+        private readonly ToolStripMenuItem _alarmItem;
         private readonly ToolStripMenuItem _settingsItem;
         private readonly ToolStripMenuItem _exitItem;
         private readonly ToolStripSeparator _exitSeparator;
@@ -41,6 +42,9 @@ namespace DshTray
         private System.Threading.RegisteredWaitHandle _duplicateWait;
         private Timer _scanTimer;
         private ServiceState _lastNotifiedState;
+        private Timer _alarmTimer;
+        private AlarmPopup _alarmPopup;
+        private DateTime _lastAlarmFired;
 
         public TrayContext(AppConfig config)
         {
@@ -51,7 +55,8 @@ namespace DshTray
             _startStopItem = new ToolStripMenuItem("停止", null, OnStartStop);
             _autoStartItem = new ToolStripMenuItem("开机启动", null, OnToggleAutoStart) { CheckOnClick = false };
             _showBallItem = new ToolStripMenuItem("桌面悬浮球", null, OnToggleBall) { CheckOnClick = false };
-            _settingsItem = new ToolStripMenuItem("设置...", null, OnSettings);
+            _alarmItem = new ToolStripMenuItem("闹钟", null, OnAlarmSettings);
+            _settingsItem = new ToolStripMenuItem("设置", null, OnSettings);
             _exitItem = new ToolStripMenuItem("退出", null, OnExit);
             _exitSeparator = new ToolStripSeparator();
 
@@ -63,6 +68,7 @@ namespace DshTray
             _menu.Items.Add(new ToolStripSeparator());
             _menu.Items.Add(_autoStartItem);
             _menu.Items.Add(_showBallItem);
+            _menu.Items.Add(_alarmItem);
             _menu.Items.Add(_settingsItem);
             _menu.Items.Add(_exitSeparator);
             _menu.Items.Add(_exitItem);
@@ -86,6 +92,7 @@ namespace DshTray
             _lastNotifiedState = ServiceState.Stopped;
             SetupDuplicateLaunchListener();
             SetupConflictScanner();
+            SetupAlarmTimer();
 
             AttachSupervisor();
             if (_config.ShowBall) CreateBall();
@@ -140,6 +147,66 @@ namespace DshTray
             _scanTimer.Interval = ScanIntervalMs;
             _scanTimer.Tick += OnConflictScan;
             _scanTimer.Start();
+        }
+
+        private void SetupAlarmTimer()
+        {
+            _alarmTimer = new Timer();
+            _alarmTimer.Interval = 30000;
+            _alarmTimer.Tick += OnAlarmTick;
+            _alarmTimer.Start();
+        }
+
+        private void OnAlarmTick(object sender, EventArgs e)
+        {
+            if (_exiting) return;
+            if (_config.Alarms == null || _config.Alarms.Count == 0) return;
+
+            DateTime now = DateTime.Now;
+            var fired = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            if (fired == _lastAlarmFired) return;
+            _lastAlarmFired = fired;
+
+            string nowKey = now.ToString("HH:mm");
+            var messages = new List<string>();
+            foreach (var alarm in _config.Alarms)
+            {
+                if (alarm == null || !alarm.Enabled) continue;
+                if (string.IsNullOrWhiteSpace(alarm.Time)) continue;
+                if (alarm.Time.Trim() != nowKey) continue;
+                if (string.IsNullOrWhiteSpace(alarm.Message)) continue;
+
+                messages.Add(alarm.Message);
+            }
+
+            if (messages.Count == 0) return;
+
+            ShowAlarmPopup(nowKey, string.Join("\r\n\r\n", messages.ToArray()));
+        }
+
+        private void ShowAlarmPopup(string time, string message)
+        {
+            if (_alarmPopup == null) _alarmPopup = new AlarmPopup();
+            _alarmPopup.ShowMessage(time, message);
+        }
+
+        private void OnAlarmSettings(object sender, EventArgs e)
+        {
+            using (var dlg = new AlarmDialog(_config.Alarms))
+            {
+                if (dlg.ShowDialog() != DialogResult.OK) return;
+
+                _config.Alarms = dlg.Result;
+                try
+                {
+                    _config.Save();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("保存闹钟设置失败：" + ex.Message, "dsh web",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
 
         private void OnConflictScan(object sender, EventArgs e)
@@ -198,14 +265,24 @@ namespace DshTray
         private static Point EnsureOnScreen(Point p)
         {
             var probe = new Rectangle(p.X, p.Y, FloatingBall.BallSize, FloatingBall.BallSize);
+            bool anyIntersects = false;
             foreach (var screen in Screen.AllScreens)
             {
-                if (screen.WorkingArea.IntersectsWith(probe)) return p;
+                if (screen.WorkingArea.IntersectsWith(probe))
+                {
+                    anyIntersects = true;
+                    break;
+                }
             }
 
-            var area = Screen.PrimaryScreen.WorkingArea;
-            return new Point(area.Right - FloatingBall.BallSize - 16,
-                             area.Bottom - FloatingBall.BallSize - 16);
+            if (!anyIntersects)
+            {
+                var area = Screen.PrimaryScreen.WorkingArea;
+                return new Point(area.Right - FloatingBall.BallSize - 16,
+                                 area.Bottom - FloatingBall.BallSize - 16);
+            }
+
+            return FloatingBall.ClampToWorkArea(p);
         }
 
         private void DestroyBall()
@@ -472,6 +549,20 @@ namespace DshTray
                 _scanTimer.Stop();
                 _scanTimer.Dispose();
                 _scanTimer = null;
+            }
+
+            if (_alarmTimer != null)
+            {
+                _alarmTimer.Stop();
+                _alarmTimer.Dispose();
+                _alarmTimer = null;
+            }
+
+            if (_alarmPopup != null)
+            {
+                _alarmPopup.ClosePopup();
+                _alarmPopup.Dispose();
+                _alarmPopup = null;
             }
 
             if (_duplicateWait != null)

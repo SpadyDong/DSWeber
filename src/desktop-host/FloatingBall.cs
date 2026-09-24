@@ -23,6 +23,8 @@ namespace DshTray
         private readonly BalancePopup _balancePopup;
 
         private readonly MenuAnchorWindow _menuAnchor;
+        private readonly Timer _flashTimer;
+        private bool _flashGray;
 
         private Point _dragOrigin;
         private Point _formOrigin;
@@ -49,6 +51,16 @@ namespace DshTray
             MouseDown += OnBallMouseDown;
             MouseMove += OnBallMouseMove;
             MouseUp += OnBallMouseUp;
+
+            _flashTimer = new Timer();
+            _flashTimer.Interval = 500;
+            _flashTimer.Tick += OnFlashTick;
+        }
+
+        private void OnFlashTick(object sender, EventArgs e)
+        {
+            _flashGray = !_flashGray;
+            Redraw();
         }
 
         protected override CreateParams CreateParams
@@ -69,6 +81,8 @@ namespace DshTray
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
+            SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
             Redraw();
         }
 
@@ -80,15 +94,30 @@ namespace DshTray
             switch (_supervisor.State)
             {
                 case ServiceState.Running:
-                case ServiceState.Starting:
                     color = ColorRunning;
                     break;
+                case ServiceState.Starting:
+                    color = _flashGray ? ColorStopped : ColorRunning;
+                    break;
                 case ServiceState.Crashed:
+                case ServiceState.PortConflict:
                     color = ColorCrashed;
                     break;
                 default:
                     color = ColorStopped;
                     break;
+            }
+
+            if (_supervisor.State == ServiceState.Starting)
+            {
+                if (!_flashTimer.Enabled)
+                {
+                    _flashTimer.Start();
+                }
+            }
+            else if (_flashTimer.Enabled)
+            {
+                _flashTimer.Stop();
             }
 
             using (var surface = ComposeBall(color))
@@ -99,6 +128,7 @@ namespace DshTray
             string label = _supervisor.State == ServiceState.Running ? "运行中"
                          : _supervisor.State == ServiceState.Starting ? "启动中"
                          : _supervisor.State == ServiceState.Crashed ? "已异常退出"
+                         : _supervisor.State == ServiceState.PortConflict ? "端口冲突"
                          : "已停止";
             AccessibleName = "dsh web - " + label;
         }
@@ -161,7 +191,7 @@ namespace DshTray
             }
             if (_moved)
             {
-                Location = new Point(_formOrigin.X + dx, _formOrigin.Y + dy);
+                Location = ClampToWorkArea(new Point(_formOrigin.X + dx, _formOrigin.Y + dy));
                 _balancePopup.Follow(Bounds);
             }
         }
@@ -186,6 +216,41 @@ namespace DshTray
             {
                 ShowBalance();
             }
+        }
+
+        internal static Point ClampToWorkArea(Point p)
+        {
+            var center = new Point(p.X + BallSize / 2, p.Y + BallSize / 2);
+            Screen target = null;
+            int bestDist = int.MaxValue;
+
+            foreach (var screen in Screen.AllScreens)
+            {
+                var area = screen.WorkingArea;
+                if (area.Contains(center))
+                {
+                    target = screen;
+                    break;
+                }
+
+                int cx = Math.Max(area.Left, Math.Min(center.X, area.Right));
+                int cy = Math.Max(area.Top, Math.Min(center.Y, area.Bottom));
+                int dx = center.X - cx;
+                int dy = center.Y - cy;
+                int dist = dx * dx + dy * dy;
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    target = screen;
+                }
+            }
+
+            if (target == null) target = Screen.PrimaryScreen;
+            var wa = target.WorkingArea;
+
+            int x = Math.Max(wa.Left, Math.Min(p.X, wa.Right - BallSize));
+            int y = Math.Max(wa.Top, Math.Min(p.Y, wa.Bottom - BallSize));
+            return new Point(x, y);
         }
 
         private void ShowContextMenu()
@@ -250,6 +315,11 @@ namespace DshTray
         {
             if (disposing)
             {
+                if (_flashTimer != null)
+                {
+                    _flashTimer.Stop();
+                    _flashTimer.Dispose();
+                }
                 if (_menuAnchor != null) _menuAnchor.Dispose();
                 if (_balancePopup != null)
                 {
@@ -268,6 +338,8 @@ namespace DshTray
         private const int ULW_ALPHA = 0x00000002;
         private const byte AC_SRC_OVER = 0x00;
         private const byte AC_SRC_ALPHA = 0x01;
+        private const uint BI_RGB = 0;
+        private const uint DIB_RGB_COLORS = 0;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct POINT
@@ -290,6 +362,28 @@ namespace DshTray
             public byte BlendFlags;
             public byte SourceConstantAlpha;
             public byte AlphaFormat;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct BITMAPINFOHEADER
+        {
+            public int biSize;
+            public int biWidth;
+            public int biHeight;
+            public short biPlanes;
+            public short biBitCount;
+            public int biCompression;
+            public int biSizeImage;
+            public int biXPelsPerMeter;
+            public int biYPelsPerMeter;
+            public int biClrUsed;
+            public int biClrImportant;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct BITMAPINFO
+        {
+            public BITMAPINFOHEADER bmiHeader;
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -321,6 +415,15 @@ namespace DshTray
         [DllImport("user32.dll")]
         private static extern bool BringWindowToTop(IntPtr hWnd);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
+            int x, int y, int cx, int cy, uint flags);
+
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_NOACTIVATE = 0x0010;
+
         private const int WM_NULL = 0x0000;
 
         [DllImport("user32.dll")]
@@ -328,6 +431,10 @@ namespace DshTray
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        private static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFO pbmi,
+            uint usage, out IntPtr ppvBits, IntPtr hSection, uint offset);
 
         [DllImport("gdi32.dll")]
         private static extern bool DeleteDC(IntPtr hdc);
@@ -342,35 +449,92 @@ namespace DshTray
         {
             IntPtr screenDc = GetDC(IntPtr.Zero);
             IntPtr memDc = CreateCompatibleDC(screenDc);
-            IntPtr hBitmap = IntPtr.Zero;
             IntPtr oldBitmap = IntPtr.Zero;
+            IntPtr hDib = IntPtr.Zero;
+            IntPtr dibBits = IntPtr.Zero;
 
             try
             {
-                hBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
-                oldBitmap = SelectObject(memDc, hBitmap);
+                int width = bitmap.Width;
+                int height = bitmap.Height;
 
-                var size = new SIZE { Cx = bitmap.Width, Cy = bitmap.Height };
-                var srcPoint = new POINT { X = 0, Y = 0 };
-                var dstPoint = new POINT { X = Left, Y = Top };
-                var blend = new BLENDFUNCTION
+                var rect = new Rectangle(0, 0, width, height);
+                BitmapData data = bitmap.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                try
                 {
-                    BlendOp = AC_SRC_OVER,
-                    BlendFlags = 0,
-                    SourceConstantAlpha = 255,
-                    AlphaFormat = AC_SRC_ALPHA
-                };
+                    byte[] src = new byte[data.Stride * height];
+                    Marshal.Copy(data.Scan0, src, 0, src.Length);
 
-                UpdateLayeredWindow(Handle, screenDc, ref dstPoint, ref size,
-                    memDc, ref srcPoint, 0, ref blend, ULW_ALPHA);
+                    byte[] premul = new byte[width * 4 * height];
+                    int srcStride = data.Stride;
+                    int dstStride = width * 4;
+                    for (int y = 0; y < height; y++)
+                    {
+                        Array.Copy(src, y * srcStride, premul, y * dstStride, dstStride);
+                    }
+
+                    for (int i = 0; i < premul.Length; i += 4)
+                    {
+                        byte a = premul[i + 3];
+                        premul[i] = (byte)(premul[i] * a / 255);
+                        premul[i + 1] = (byte)(premul[i + 1] * a / 255);
+                        premul[i + 2] = (byte)(premul[i + 2] * a / 255);
+                    }
+
+                    var bmi = new BITMAPINFO();
+                    bmi.bmiHeader = new BITMAPINFOHEADER
+                    {
+                        biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER)),
+                        biWidth = width,
+                        biHeight = -height,
+                        biPlanes = 1,
+                        biBitCount = 32,
+                        biCompression = (int)BI_RGB,
+                        biSizeImage = premul.Length,
+                        biXPelsPerMeter = 0,
+                        biYPelsPerMeter = 0,
+                        biClrUsed = 0,
+                        biClrImportant = 0
+                    };
+
+                    hDib = CreateDIBSection(screenDc, ref bmi, DIB_RGB_COLORS, out dibBits, IntPtr.Zero, 0);
+                    if (hDib == IntPtr.Zero || dibBits == IntPtr.Zero)
+                    {
+                        return;
+                    }
+
+                    Marshal.Copy(premul, 0, dibBits, premul.Length);
+                    oldBitmap = SelectObject(memDc, hDib);
+
+                    var size = new SIZE { Cx = width, Cy = height };
+                    var srcPoint = new POINT { X = 0, Y = 0 };
+                    var dstPoint = new POINT { X = Left, Y = Top };
+                    var blend = new BLENDFUNCTION
+                    {
+                        BlendOp = AC_SRC_OVER,
+                        BlendFlags = 0,
+                        SourceConstantAlpha = 255,
+                        AlphaFormat = AC_SRC_ALPHA
+                    };
+
+                    UpdateLayeredWindow(Handle, screenDc, ref dstPoint, ref size,
+                        memDc, ref srcPoint, 0, ref blend, ULW_ALPHA);
+                }
+                finally
+                {
+                    bitmap.UnlockBits(data);
+                }
             }
             finally
             {
                 ReleaseDC(IntPtr.Zero, screenDc);
-                if (hBitmap != IntPtr.Zero)
+                if (oldBitmap != IntPtr.Zero)
                 {
                     SelectObject(memDc, oldBitmap);
-                    DeleteObject(hBitmap);
+                }
+                if (hDib != IntPtr.Zero)
+                {
+                    DeleteObject(hDib);
                 }
                 DeleteDC(memDc);
             }

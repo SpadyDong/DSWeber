@@ -123,7 +123,6 @@ namespace DshTray
                           : "";
 
             string amount = symbol + (string.IsNullOrEmpty(r.TotalBalance) ? "-" : r.TotalBalance);
-            string detail = "赠送 " + Blank(r.GrantedBalance) + "   充值 " + Blank(r.ToppedUpBalance);
             string footer = (r.IsAvailable ? "账户可用" : "账户不可用")
                           + (string.IsNullOrEmpty(r.KeySource) ? "" : "   密钥来源：" + r.KeySource);
 
@@ -131,8 +130,7 @@ namespace DshTray
             {
                 new TextLine("DeepSeek 余额", _fontTitle, TextMuted, 0),
                 new TextLine(amount, _fontAmount, TextPrimary, 2),
-                new TextLine(detail, _fontBody, TextMuted, 4),
-                new TextLine(footer, _fontSmall, r.IsAvailable ? TextMuted : ErrorColor, 6)
+                new TextLine(footer, _fontSmall, r.IsAvailable ? TextMuted : ErrorColor, 4)
             };
             return Compose(lines, r.IsAvailable ? Accent : ErrorColor);
         }
@@ -152,11 +150,6 @@ namespace DshTray
                     new TextLine(r.ErrorDetail, _fontSmall, TextMuted, 5)
                 };
             return Compose(lines, ErrorColor);
-        }
-
-        private static string Blank(string s)
-        {
-            return string.IsNullOrEmpty(s) ? "-" : s;
         }
 
         private sealed class TextLine
