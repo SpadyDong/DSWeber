@@ -25,7 +25,7 @@ if not exist "%OUT%" mkdir "%OUT%"
 "%CSC%" /nologo /target:winexe /platform:anycpu /optimize+ /out:"%OUT%\DshTray.exe" ^
   /reference:System.dll /reference:System.Drawing.dll ^
   /reference:System.Windows.Forms.dll /reference:System.Web.Extensions.dll ^
-  /reference:System.Management.dll ^
+  /reference:System.Management.dll /reference:System.Security.dll ^
   "%SRC%\*.cs"
 
 if errorlevel 1 (

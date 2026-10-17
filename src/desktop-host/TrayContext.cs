@@ -13,6 +13,7 @@ namespace DshTray
 
         private const int BalloonMs = 5000;
         private const int ScanIntervalMs = 60000;
+        private const int QuotaRefreshMs = 60000;
 
         private static readonly Color ColorRunning = Color.FromArgb(77, 107, 254);
         private static readonly Color ColorStopped = Color.FromArgb(150, 150, 150);
@@ -26,6 +27,7 @@ namespace DshTray
         private readonly ToolStripMenuItem _autoStartItem;
         private readonly ToolStripMenuItem _showBallItem;
         private readonly ToolStripMenuItem _alarmItem;
+        private readonly ToolStripMenuItem _reloginArkItem;
         private readonly ToolStripMenuItem _settingsItem;
         private readonly ToolStripMenuItem _exitItem;
         private readonly ToolStripSeparator _exitSeparator;
@@ -44,7 +46,8 @@ namespace DshTray
         private ServiceState _lastNotifiedState;
         private Timer _alarmTimer;
         private AlarmPopup _alarmPopup;
-        private DateTime _lastAlarmFired;
+        private DateTime _lastAlarmCheck;
+        private Timer _quotaTimer;
 
         public TrayContext(AppConfig config)
         {
@@ -56,6 +59,7 @@ namespace DshTray
             _autoStartItem = new ToolStripMenuItem("开机启动", null, OnToggleAutoStart) { CheckOnClick = false };
             _showBallItem = new ToolStripMenuItem("桌面悬浮球", null, OnToggleBall) { CheckOnClick = false };
             _alarmItem = new ToolStripMenuItem("闹钟", null, OnAlarmSettings);
+            _reloginArkItem = new ToolStripMenuItem("重新登录火山方舟", null, OnReloginArk);
             _settingsItem = new ToolStripMenuItem("设置", null, OnSettings);
             _exitItem = new ToolStripMenuItem("退出", null, OnExit);
             _exitSeparator = new ToolStripSeparator();
@@ -69,6 +73,7 @@ namespace DshTray
             _menu.Items.Add(_autoStartItem);
             _menu.Items.Add(_showBallItem);
             _menu.Items.Add(_alarmItem);
+            _menu.Items.Add(_reloginArkItem);
             _menu.Items.Add(_settingsItem);
             _menu.Items.Add(_exitSeparator);
             _menu.Items.Add(_exitItem);
@@ -85,6 +90,10 @@ namespace DshTray
             _ui = System.Threading.SynchronizationContext.Current
                   ?? new WindowsFormsSynchronizationContext();
 
+            BalanceService.Refreshed += OnBalanceRefreshed;
+            CodexQuotaService.Refreshed += OnCodexRefreshed;
+            ArkPlanService.Refreshed += OnArkRefreshed;
+
             AutoStart.Apply(_config.AutoStart);
             _autoStartItem.Checked = AutoStart.IsEnabled();
             _showBallItem.Checked = _config.ShowBall;
@@ -93,6 +102,8 @@ namespace DshTray
             SetupDuplicateLaunchListener();
             SetupConflictScanner();
             SetupAlarmTimer();
+            SetupQuotaTimer();
+            OnQuotaTick(null, EventArgs.Empty);
 
             AttachSupervisor();
             if (_config.ShowBall) CreateBall();
@@ -151,37 +162,65 @@ namespace DshTray
 
         private void SetupAlarmTimer()
         {
+            _lastAlarmCheck = DateTime.Now;
             _alarmTimer = new Timer();
             _alarmTimer.Interval = 30000;
             _alarmTimer.Tick += OnAlarmTick;
             _alarmTimer.Start();
         }
 
+        private void SetupQuotaTimer()
+        {
+            _quotaTimer = new Timer();
+            _quotaTimer.Interval = QuotaRefreshMs;
+            _quotaTimer.Tick += OnQuotaTick;
+            _quotaTimer.Start();
+        }
+
+        private void OnQuotaTick(object sender, EventArgs e)
+        {
+            if (_exiting || _config == null) return;
+
+            BalanceService.Refresh(_config);
+            if (_config.ShowCodexQuota) CodexQuotaService.Refresh(_config);
+            ArkPlanService.Refresh(_config);
+        }
+
+        private void OnBalanceRefreshed(BalanceResult result)
+        {
+            try { _ui.Post(delegate {
+                if (!_exiting && ReferenceEquals(BalanceService.GetCached(), result) && _ball != null)
+                    _ball.UpdateBalance(result);
+            }, null); } catch { }
+        }
+
+        private void OnCodexRefreshed(CodexQuota result)
+        {
+            try { _ui.Post(delegate {
+                if (!_exiting && ReferenceEquals(CodexQuotaService.GetCached(), result) && _ball != null)
+                    _ball.UpdateCodex(result);
+            }, null); } catch { }
+        }
+
+        private void OnArkRefreshed(ArkPlan result)
+        {
+            try { _ui.Post(delegate {
+                if (!_exiting && ReferenceEquals(ArkPlanService.GetCached(), result) && _ball != null)
+                    _ball.UpdateArk(result);
+            }, null); } catch { }
+        }
+
         private void OnAlarmTick(object sender, EventArgs e)
         {
             if (_exiting) return;
-            if (_config.Alarms == null || _config.Alarms.Count == 0) return;
-
             DateTime now = DateTime.Now;
-            var fired = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
-            if (fired == _lastAlarmFired) return;
-            _lastAlarmFired = fired;
-
-            string nowKey = now.ToString("HH:mm");
-            var messages = new List<string>();
-            foreach (var alarm in _config.Alarms)
-            {
-                if (alarm == null || !alarm.Enabled) continue;
-                if (string.IsNullOrWhiteSpace(alarm.Time)) continue;
-                if (alarm.Time.Trim() != nowKey) continue;
-                if (string.IsNullOrWhiteSpace(alarm.Message)) continue;
-
-                messages.Add(alarm.Message);
-            }
+            DateTime previous = _lastAlarmCheck;
+            _lastAlarmCheck = now;
+            var messages = AlarmSchedule.DueMessages(previous, now, _config.Alarms);
 
             if (messages.Count == 0) return;
 
-            ShowAlarmPopup(nowKey, string.Join("\r\n\r\n", messages.ToArray()));
+            ShowAlarmPopup("提醒", string.Join("\r\n\r\n", messages.ToArray()));
         }
 
         private void ShowAlarmPopup(string time, string message)
@@ -197,6 +236,7 @@ namespace DshTray
                 if (dlg.ShowDialog() != DialogResult.OK) return;
 
                 _config.Alarms = dlg.Result;
+                _lastAlarmCheck = DateTime.Now;
                 try
                 {
                     _config.Save();
@@ -207,6 +247,53 @@ namespace DshTray
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private void OnReloginArk(object sender, EventArgs e)
+        {
+            string exe = Probe.FindArkCli();
+            if (string.IsNullOrEmpty(exe))
+            {
+                MessageBox.Show(
+                    "未找到火山方舟 CLI（arkcli）。\r\n\r\n"
+                    + "请先安装：npm i @volcengine/ark-cli -g",
+                    "dsh web", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Process proc;
+            try
+            {
+                proc = Process.Start(new ProcessStartInfo
+                {
+                    FileName = exe,
+                    Arguments = "auth login volc-sso",
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("无法启动火山方舟登录：\r\n" + ex.Message, "dsh web",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (proc == null) return;
+
+            var cfg = _config;
+            System.Threading.ThreadPool.QueueUserWorkItem(delegate
+            {
+                try { proc.WaitForExit(); } catch { }
+                try
+                {
+                    ArkPlanService.Invalidate();
+                    if (cfg != null) ArkPlanService.Refresh(cfg);
+                }
+                catch
+                {
+                }
+            });
         }
 
         private void OnConflictScan(object sender, EventArgs e)
@@ -264,7 +351,11 @@ namespace DshTray
 
         private static Point EnsureOnScreen(Point p)
         {
-            var probe = new Rectangle(p.X, p.Y, FloatingBall.BallSize, FloatingBall.BallSize);
+            var home = Screen.FromPoint(new Point(p.X + FloatingBall.BaseBallSize / 2,
+                                                 p.Y + FloatingBall.BaseBallSize / 2));
+            int ballSize = Dpi.Scaled(FloatingBall.BaseBallSize, Dpi.ScaleForScreen(home));
+
+            var probe = new Rectangle(p.X, p.Y, ballSize, ballSize);
             bool anyIntersects = false;
             foreach (var screen in Screen.AllScreens)
             {
@@ -277,12 +368,15 @@ namespace DshTray
 
             if (!anyIntersects)
             {
+                float primaryScale = Dpi.ScaleForScreen(Screen.PrimaryScreen);
+                int primaryBall = Dpi.Scaled(FloatingBall.BaseBallSize, primaryScale);
+                int margin = Dpi.Scaled(16, primaryScale);
                 var area = Screen.PrimaryScreen.WorkingArea;
-                return new Point(area.Right - FloatingBall.BallSize - 16,
-                                 area.Bottom - FloatingBall.BallSize - 16);
+                return new Point(area.Right - primaryBall - margin,
+                                 area.Bottom - primaryBall - margin);
             }
 
-            return FloatingBall.ClampToWorkArea(p);
+            return FloatingBall.ClampToWorkArea(p, ballSize);
         }
 
         private void DestroyBall()
@@ -526,23 +620,41 @@ namespace DshTray
             {
                 if (form.ShowDialog() != DialogResult.OK) return;
 
+                var updated = form.Result;
+                try { updated.Save(); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("保存设置失败，运行中的服务未改变：" + ex.Message, "dsh web",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 _supervisor.Stop();
                 DestroyBall();
-                _config = form.Result;
-                _config.Save();
+                _config = updated;
                 BalanceService.Invalidate();
-                AutoStart.Apply(_config.AutoStart);
+                CodexQuotaService.Invalidate();
+                ArkPlanService.Invalidate();
+                try { AutoStart.Apply(_config.AutoStart); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("设置已保存，但更新开机启动失败：" + ex.Message, "dsh web",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 _autoStartItem.Checked = AutoStart.IsEnabled();
                 AttachSupervisor();
                 _showBallItem.Checked = _config.ShowBall;
                 if (_config.ShowBall) CreateBall();
                 _supervisor.Start();
+                OnQuotaTick(null, EventArgs.Empty);
             }
         }
 
         private void OnExit(object sender, EventArgs e)
         {
             _exiting = true;
+            BalanceService.Refreshed -= OnBalanceRefreshed;
+            CodexQuotaService.Refreshed -= OnCodexRefreshed;
+            ArkPlanService.Refreshed -= OnArkRefreshed;
 
             if (_scanTimer != null)
             {
@@ -563,6 +675,13 @@ namespace DshTray
                 _alarmPopup.ClosePopup();
                 _alarmPopup.Dispose();
                 _alarmPopup = null;
+            }
+
+            if (_quotaTimer != null)
+            {
+                _quotaTimer.Stop();
+                _quotaTimer.Dispose();
+                _quotaTimer = null;
             }
 
             if (_duplicateWait != null)

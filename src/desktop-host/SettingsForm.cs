@@ -17,20 +17,26 @@ namespace DshTray
         private readonly CheckBox _noOpen = new CheckBox();
         private readonly CheckBox _autoRestart = new CheckBox();
         private readonly CheckBox _autoStart = new CheckBox();
+        private readonly CheckBox _showCodex = new CheckBox();
 
         public AppConfig Result { get; private set; }
 
         private readonly AppConfig _existing;
+        private readonly AppConfig _defaults;
 
         public SettingsForm(AppConfig existing)
         {
             _existing = existing;
+            _defaults = new AppConfig();
+            _defaults.ApplyDefaults();
             Text = "dsh 托盘 - 配置";
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             StartPosition = FormStartPosition.CenterScreen;
-            ClientSize = new Size(560, 386);
+            ClientSize = new Size(560, 424);
             Font = new Font("Microsoft YaHei UI", 9f);
             Icon = IconFactory.CreateGlyphIcon(32, Color.FromArgb(77, 107, 254));
 
@@ -44,6 +50,7 @@ namespace DshTray
             _apiKey.Left = 130;
             _apiKey.Top = y;
             _apiKey.Width = 340;
+            _apiKey.UseSystemPasswordChar = true;
             Controls.Add(new Label { Left = 16, Top = y + 4, Width = 110, Text = "DeepSeek API Key" });
             Controls.Add(_apiKey);
             y += 30;
@@ -52,15 +59,16 @@ namespace DshTray
             AddCheck(_noOpen, "启动时不自动打开浏览器（--no-open）", ref y);
             AddCheck(_autoRestart, "进程异常退出后自动重启（最多 5 次）", ref y);
             AddCheck(_autoStart, "开机自动启动本托盘程序", ref y);
+            AddCheck(_showCodex, "在余额气泡中显示 Codex 配额（5 小时 / 7 天剩余）", ref y);
 
             var tip = new Label
             {
                 Left = 16,
                 Top = y + 4,
                 Width = 528,
-                Height = 46,
+                Height = 58,
                 ForeColor = Color.DimGray,
-                Text = "所有字段均需显式填写，不提供隐含默认值。Host 填 127.0.0.1 只允许本机访问，填 0.0.0.0 允许局域网访问。\r\nAPI Key 留空时，点击悬浮球查余额将自动读取 %USERPROFILE%\\.dsh\\.credentials.yaml 中的 DEEPSEEK_API_KEY。"
+                Text = "路径、Host、端口均有默认值，一般只需填 DeepSeek API Key（也可留空）。Host 填 127.0.0.1 仅本机访问，填 0.0.0.0 允许局域网访问。\r\nAPI Key 留空时，点击悬浮球查余额将自动读取 %USERPROFILE%\\.dsh\\.credentials.yaml 中的 DEEPSEEK_API_KEY。\r\nCodex 配额需本机已安装 codex CLI，路径自动探测，无需填写。"
             };
             Controls.Add(tip);
 
@@ -83,12 +91,21 @@ namespace DshTray
                 _noOpen.Checked = existing.NoOpen;
                 _autoRestart.Checked = existing.AutoRestart;
                 _autoStart.Checked = existing.AutoStart;
+                _showCodex.Checked = existing.ShowCodexQuota;
                 _apiKey.Text = existing.ApiKey ?? "";
             }
             else
             {
-                _nodePath.Text = Probe.FindNode() ?? "";
-                _dshScript.Text = Probe.FindDshScript() ?? "";
+                _nodePath.Text = _defaults.NodePath ?? "";
+                _dshScript.Text = _defaults.DshScript ?? "";
+                _workDir.Text = _defaults.WorkingDirectory ?? "";
+                _host.Text = _defaults.Host ?? "";
+                _port.Text = _defaults.Port.ToString();
+                _noOpen.Checked = _defaults.NoOpen;
+                _autoRestart.Checked = _defaults.AutoRestart;
+                _autoStart.Checked = _defaults.AutoStart;
+                _showCodex.Checked = true;
+                _apiKey.Text = "";
             }
         }
 
@@ -153,14 +170,17 @@ namespace DshTray
             {
                 NodePath = _nodePath.Text.Trim(),
                 DshScript = _dshScript.Text.Trim(),
-                WorkingDirectory = _workDir.Text.Trim(),
-                Host = _host.Text.Trim(),
+                WorkingDirectory = string.IsNullOrWhiteSpace(_workDir.Text)
+                    ? _defaults.WorkingDirectory : _workDir.Text.Trim(),
+                Host = string.IsNullOrWhiteSpace(_host.Text)
+                    ? _defaults.Host : _host.Text.Trim(),
                 NoOpen = _noOpen.Checked,
                 AutoRestart = _autoRestart.Checked,
                 AutoStart = _autoStart.Checked,
                 ShowBall = _existing != null && _existing.ShowBall,
                 BallX = _existing != null ? _existing.BallX : 0,
                 BallY = _existing != null ? _existing.BallY : 0,
+                ShowCodexQuota = _showCodex.Checked,
                 ApiKey = _apiKey.Text.Trim(),
                 Alarms = CloneAlarms(_existing != null ? _existing.Alarms : null)
             };
@@ -169,14 +189,13 @@ namespace DshTray
 
             int port;
             if (string.IsNullOrWhiteSpace(_port.Text))
-                errors.Add("端口未填写");
+                port = _defaults.Port;
             else if (!int.TryParse(_port.Text.Trim(), out port))
                 errors.Add("端口必须是整数");
-            else
-                cfg.Port = port;
+            else if (port < 1 || port > 65535)
+                errors.Add("端口必须为 1-65535");
 
-            if (string.IsNullOrWhiteSpace(cfg.Host))
-                errors.Add("Host 未填写");
+            cfg.Port = port;
 
             errors.AddRange(cfg.Validate());
 

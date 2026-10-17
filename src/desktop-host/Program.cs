@@ -9,6 +9,9 @@ namespace DshTray
         [STAThread]
         private static void Main()
         {
+            // 必须在创建任何窗口之前启用，否则高缩放显示器上位图会被拉伸而模糊
+            Dpi.Enable();
+
             bool created;
             using (var mutex = new Mutex(true, "Local\\DshTray_SingleInstance", out created))
             {
@@ -21,14 +24,43 @@ namespace DshTray
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                var config = AppConfig.Load();
-                var errors = config == null ? null : config.Validate();
+                AppConfig config = null;
+                try
+                {
+                    config = AppConfig.Load();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("配置文件无法读取：" + ex.Message + "\r\n\r\n请在设置窗口重新保存配置。原文件会保留备份。",
+                        "dsh 托盘", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (System.IO.File.Exists(AppConfig.ConfigPath))
+                    {
+                        try
+                        {
+                            System.IO.File.Copy(AppConfig.ConfigPath,
+                                AppConfig.ConfigPath + ".invalid-" + Guid.NewGuid().ToString("N"), false);
+                        }
+                        catch (Exception backupError)
+                        {
+                            MessageBox.Show("无法备份原配置，程序将退出以避免覆盖它：" + backupError.Message,
+                                "dsh 托盘", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                }
+                System.Collections.Generic.List<string> errors = null;
+                if (config != null)
+                {
+                    config.ApplyDefaults();
+                    errors = config.Validate();
+                }
 
                 if (config == null || errors.Count > 0)
                 {
                     if (errors != null && errors.Count > 0)
                     {
-                        MessageBox.Show("配置需要补全：\r\n\r\n" + string.Join("\r\n", errors.ToArray()),
+                        MessageBox.Show("以下配置缺失或无效，请确认（其余字段已自动填默认值）：\r\n\r\n"
+                            + string.Join("\r\n", errors.ToArray()),
                             "dsh 托盘", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
 
@@ -36,7 +68,13 @@ namespace DshTray
                     {
                         if (form.ShowDialog() != DialogResult.OK) return;
                         config = form.Result;
-                        config.Save();
+                        try { config.Save(); }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("保存配置失败：" + ex.Message, "dsh 托盘",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
                 }
 

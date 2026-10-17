@@ -19,6 +19,8 @@ namespace DshTray
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             StartPosition = FormStartPosition.CenterScreen;
             ClientSize = new Size(460, 300);
             Font = new Font("Microsoft YaHei UI", 9f);
@@ -43,7 +45,7 @@ namespace DshTray
                 Top = 224,
                 Width = 430,
                 ForeColor = Color.DimGray,
-                Text = "勾选表示启用该闹钟；每天到时间后弹出提醒气泡，点击气泡关闭。"
+                Text = "勾选表示启用；只在设定时间的那一分钟提醒，错过后不补发。"
             };
             Controls.Add(tip);
 
@@ -173,6 +175,8 @@ namespace DshTray
                 FormBorderStyle = FormBorderStyle.FixedDialog;
                 MaximizeBox = false;
                 MinimizeBox = false;
+                AutoScaleDimensions = new SizeF(96F, 96F);
+                AutoScaleMode = AutoScaleMode.Dpi;
                 StartPosition = FormStartPosition.CenterParent;
                 ClientSize = new Size(360, 190);
                 Font = new Font("Microsoft YaHei UI", 9f);

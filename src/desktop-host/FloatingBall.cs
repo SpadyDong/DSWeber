@@ -8,8 +8,8 @@ namespace DshTray
 {
     internal sealed class FloatingBall : Form
     {
-        public const int BallSize = 44;
-        private const int DragThreshold = 4;
+        public const int BaseBallSize = 44;
+        private const int BaseDragThreshold = 4;
 
         private static readonly Color ColorRunning = Color.FromArgb(77, 107, 254);
         private static readonly Color ColorStopped = Color.FromArgb(150, 150, 150);
@@ -21,15 +21,29 @@ namespace DshTray
         private readonly ContextMenuStrip _menu;
         private readonly AppConfig _appConfig;
         private readonly BalancePopup _balancePopup;
+        private int _balanceSession;
 
         private readonly MenuAnchorWindow _menuAnchor;
         private readonly Timer _flashTimer;
+        private readonly Timer _visibilityTimer;
         private bool _flashGray;
 
         private Point _dragOrigin;
         private Point _formOrigin;
         private bool _dragging;
         private bool _moved;
+        private float _scale = 1f;
+
+        /// <summary>按当前显示器 DPI 缩放后的球体边长。</summary>
+        public int BallSize
+        {
+            get { return Dpi.Scaled(BaseBallSize, _scale); }
+        }
+
+        private int DragThreshold
+        {
+            get { return Dpi.Scaled(BaseDragThreshold, _scale); }
+        }
 
         public FloatingBall(DshSupervisor supervisor, AppConfig appConfig, Point location, ContextMenuStrip menu, Action<Point> onMoved, Action onMenuShowing)
         {
@@ -45,6 +59,8 @@ namespace DshTray
             ShowInTaskbar = false;
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
+            _scale = Dpi.ScaleForScreen(Screen.FromPoint(new Point(
+                location.X + BaseBallSize / 2, location.Y + BaseBallSize / 2)));
             Size = new Size(BallSize, BallSize);
             Location = location;
 
@@ -55,11 +71,35 @@ namespace DshTray
             _flashTimer = new Timer();
             _flashTimer.Interval = 500;
             _flashTimer.Tick += OnFlashTick;
+
+            _visibilityTimer = new Timer();
+            _visibilityTimer.Interval = 5000;
+            _visibilityTimer.Tick += OnVisibilityTick;
         }
 
         private void OnFlashTick(object sender, EventArgs e)
         {
             _flashGray = !_flashGray;
+            Redraw();
+        }
+
+        private void OnVisibilityTick(object sender, EventArgs e)
+        {
+            KeepVisible();
+        }
+
+        private void KeepVisible()
+        {
+            if (!Visible || !IsHandleCreated) return;
+            if (!_dragging)
+            {
+                Point onScreen = ClampToWorkArea(Location, BallSize);
+                if (onScreen != Location) Location = onScreen;
+            }
+            // Window ordering or layered pixels can be lost after desktop changes.
+            // Reassert the position without activating the ball, then redraw it.
+            SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
+                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
             Redraw();
         }
 
@@ -78,12 +118,46 @@ namespace DshTray
             get { return true; }
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            // 拖到 DPI 不同的显示器时，按新 DPI 重排球体尺寸并重绘，避免被系统拉伸
+            if (m.Msg == WM_DPICHANGED)
+            {
+                float scale = ((m.WParam.ToInt64() >> 16) & 0xFFFF) / (float)Dpi.BaseDpi;
+                if (scale <= 0f) scale = 1f;
+
+                if (Math.Abs(scale - _scale) > 0.001f)
+                {
+                    int centerX = Location.X + Width / 2;
+                    int centerY = Location.Y + Height / 2;
+
+                    _scale = scale;
+                    Size = new Size(BallSize, BallSize);
+                    Location = ClampToWorkArea(
+                        new Point(centerX - BallSize / 2, centerY - BallSize / 2), BallSize);
+
+                    Redraw();
+                    _balancePopup.Follow(Bounds);
+                }
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
             SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0,
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
             Redraw();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            _visibilityTimer.Start();
+            KeepVisible();
         }
 
         public void Redraw()
@@ -133,32 +207,33 @@ namespace DshTray
             AccessibleName = "dsh web - " + label;
         }
 
-        private static Bitmap ComposeBall(Color glyphColor)
+        private Bitmap ComposeBall(Color glyphColor)
         {
-            var bmp = new Bitmap(BallSize, BallSize, PixelFormat.Format32bppArgb);
+            int size = BallSize;
+            var bmp = new Bitmap(size, size, PixelFormat.Format32bppArgb);
             using (var g = Graphics.FromImage(bmp))
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.Clear(Color.Transparent);
 
-                var plate = new Rectangle(0, 0, BallSize - 1, BallSize - 1);
+                var plate = new Rectangle(0, 0, size - 1, size - 1);
                 using (var shadow = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
                 {
-                    g.FillEllipse(shadow, 1, 2, BallSize - 2, BallSize - 2);
+                    g.FillEllipse(shadow, 1, 2, size - 2, size - 2);
                 }
                 using (var back = new SolidBrush(Color.FromArgb(235, 255, 255, 255)))
                 {
                     g.FillEllipse(back, plate);
                 }
-                using (var ring = new Pen(Color.FromArgb(60, glyphColor), 1.6f))
+                using (var ring = new Pen(Color.FromArgb(60, glyphColor), Math.Max(1f, 1.6f * _scale)))
                 {
                     g.DrawEllipse(ring, plate);
                 }
 
-                using (var glyph = IconFactory.CreateGlyphBitmap(BallSize, glyphColor))
+                using (var glyph = IconFactory.CreateGlyphBitmap(size, glyphColor))
                 {
-                    int inner = (int)(BallSize * 0.66f);
-                    int pad = (BallSize - inner) / 2;
+                    int inner = (int)(size * 0.66f);
+                    int pad = (size - inner) / 2;
                     g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                     g.DrawImage(glyph, new Rectangle(pad, pad, inner, inner));
                 }
@@ -191,7 +266,7 @@ namespace DshTray
             }
             if (_moved)
             {
-                Location = ClampToWorkArea(new Point(_formOrigin.X + dx, _formOrigin.Y + dy));
+                Location = ClampToWorkArea(new Point(_formOrigin.X + dx, _formOrigin.Y + dy), BallSize);
                 _balancePopup.Follow(Bounds);
             }
         }
@@ -218,9 +293,9 @@ namespace DshTray
             }
         }
 
-        internal static Point ClampToWorkArea(Point p)
+        internal static Point ClampToWorkArea(Point p, int ballSize)
         {
-            var center = new Point(p.X + BallSize / 2, p.Y + BallSize / 2);
+            var center = new Point(p.X + ballSize / 2, p.Y + ballSize / 2);
             Screen target = null;
             int bestDist = int.MaxValue;
 
@@ -248,8 +323,8 @@ namespace DshTray
             if (target == null) target = Screen.PrimaryScreen;
             var wa = target.WorkingArea;
 
-            int x = Math.Max(wa.Left, Math.Min(p.X, wa.Right - BallSize));
-            int y = Math.Max(wa.Top, Math.Min(p.Y, wa.Bottom - BallSize));
+            int x = Math.Max(wa.Left, Math.Min(p.X, wa.Right - ballSize));
+            int y = Math.Max(wa.Top, Math.Min(p.Y, wa.Bottom - ballSize));
             return new Point(x, y);
         }
 
@@ -303,12 +378,57 @@ namespace DshTray
 
         private void ShowBalance()
         {
-            var bounds = Bounds;
-            int session = _balancePopup.ShowLoading(bounds);
-            BalanceService.QueryAsync(_appConfig, delegate(BalanceResult r)
+            bool codexEnabled = _appConfig != null && _appConfig.ShowCodexQuota;
+
+            // 平时由托盘后台每 60 秒刷新缓存，这里优先直接用缓存，避免等待
+            BalanceResult cachedBalance = BalanceService.GetCached();
+            CodexQuota cachedCodex = codexEnabled ? CodexQuotaService.GetCached() : null;
+            ArkPlan cachedArk = ArkPlanService.GetCached();
+
+            int session = _balancePopup.ShowLoading(Bounds, codexEnabled, cachedBalance, cachedCodex, cachedArk);
+            _balanceSession = session;
+
+            if (cachedBalance == null)
             {
-                _balancePopup.ShowResult(session, r);
-            });
+                BalanceService.QueryAsync(_appConfig, delegate(BalanceResult r)
+                {
+                    if (!_balancePopup.IsDisposed) _balancePopup.SetBalance(session, r);
+                });
+            }
+
+            if (codexEnabled && cachedCodex == null)
+            {
+                CodexQuotaService.QueryAsync(_appConfig, delegate(CodexQuota q)
+                {
+                    if (!_balancePopup.IsDisposed) _balancePopup.SetCodex(session, q);
+                });
+            }
+
+            if (cachedArk == null)
+            {
+                ArkPlanService.QueryAsync(_appConfig, delegate(ArkPlan p)
+                {
+                    if (!_balancePopup.IsDisposed) _balancePopup.SetArk(session, p);
+                });
+            }
+        }
+
+        public void UpdateBalance(BalanceResult result)
+        {
+            if (!_balancePopup.IsDisposed && _balancePopup.Visible)
+                _balancePopup.SetBalance(_balanceSession, result);
+        }
+
+        public void UpdateCodex(CodexQuota result)
+        {
+            if (!_balancePopup.IsDisposed && _balancePopup.Visible && _appConfig.ShowCodexQuota)
+                _balancePopup.SetCodex(_balanceSession, result);
+        }
+
+        public void UpdateArk(ArkPlan result)
+        {
+            if (!_balancePopup.IsDisposed && _balancePopup.Visible)
+                _balancePopup.SetArk(_balanceSession, result);
         }
 
         protected override void Dispose(bool disposing)
@@ -319,6 +439,11 @@ namespace DshTray
                 {
                     _flashTimer.Stop();
                     _flashTimer.Dispose();
+                }
+                if (_visibilityTimer != null)
+                {
+                    _visibilityTimer.Stop();
+                    _visibilityTimer.Dispose();
                 }
                 if (_menuAnchor != null) _menuAnchor.Dispose();
                 if (_balancePopup != null)
@@ -425,6 +550,7 @@ namespace DshTray
         private const uint SWP_NOACTIVATE = 0x0010;
 
         private const int WM_NULL = 0x0000;
+        private const int WM_DPICHANGED = 0x02E0;
 
         [DllImport("user32.dll")]
         private static extern bool PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);

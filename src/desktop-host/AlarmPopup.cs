@@ -10,19 +10,25 @@ namespace DshTray
 {
     internal sealed class AlarmPopup : Form
     {
-        private const int PopupWidth = 260;
-        private const int PaddingX = 16;
-        private const int PaddingY = 14;
-        private const int CornerRadius = 10;
-        private const int ScreenMargin = 16;
+        private const int BasePopupWidth = 260;
+        private const int BasePaddingX = 16;
+        private const int BasePaddingY = 14;
+        private const int BaseCornerRadius = 10;
+        private const int BaseScreenMargin = 16;
 
         private static readonly Color Accent = Color.FromArgb(77, 107, 254);
         private static readonly Color TextPrimary = Color.FromArgb(32, 34, 40);
         private static readonly Color TextMuted = Color.FromArgb(130, 134, 145);
 
-        private readonly Font _fontTitle = new Font("Microsoft YaHei UI", 9f, FontStyle.Regular);
-        private readonly Font _fontTime = new Font("Microsoft YaHei UI", 15f, FontStyle.Bold);
-        private readonly Font _fontBody = new Font("Microsoft YaHei UI", 10.5f, FontStyle.Regular);
+        private float _scale = -1f;
+        private int _popupWidth;
+        private int _paddingX;
+        private int _paddingY;
+        private int _cornerRadius;
+        private int _screenMargin;
+        private Font _fontTitle;
+        private Font _fontTime;
+        private Font _fontBody;
 
         public AlarmPopup()
         {
@@ -30,8 +36,32 @@ namespace DshTray
             ShowInTaskbar = false;
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
+            AutoScaleMode = AutoScaleMode.None;
+            UpdateScale();
 
             MouseUp += delegate { ClosePopup(); };
+        }
+
+        /// <summary>闹钟气泡固定显示在主屏，按主屏 DPI 重排尺寸与字体。</summary>
+        private void UpdateScale()
+        {
+            float scale = Dpi.ScaleForScreen(Screen.PrimaryScreen);
+            if (Math.Abs(scale - _scale) < 0.001f) return;
+
+            _scale = scale;
+            _popupWidth = Dpi.Scaled(BasePopupWidth, scale);
+            _paddingX = Dpi.Scaled(BasePaddingX, scale);
+            _paddingY = Dpi.Scaled(BasePaddingY, scale);
+            _cornerRadius = Dpi.Scaled(BaseCornerRadius, scale);
+            _screenMargin = Dpi.Scaled(BaseScreenMargin, scale);
+
+            if (_fontTitle != null) _fontTitle.Dispose();
+            if (_fontTime != null) _fontTime.Dispose();
+            if (_fontBody != null) _fontBody.Dispose();
+
+            _fontTitle = new Font("Microsoft YaHei UI", 9f * scale, FontStyle.Regular);
+            _fontTime = new Font("Microsoft YaHei UI", 15f * scale, FontStyle.Bold);
+            _fontBody = new Font("Microsoft YaHei UI", 10.5f * scale, FontStyle.Regular);
         }
 
         protected override CreateParams CreateParams
@@ -51,6 +81,7 @@ namespace DshTray
 
         public void ShowMessage(string time, string message)
         {
+            UpdateScale();
             Render(Build(time, message));
             if (!Visible) Show();
         }
@@ -92,10 +123,11 @@ namespace DshTray
 
         private Bitmap Compose(TextLine[] lines, Color stripe)
         {
-            int contentWidth = PopupWidth - PaddingX * 2;
+            int contentWidth = _popupWidth - _paddingX * 2;
+            int stripeWidth = Dpi.Scaled(3, _scale);
 
             var heights = new int[lines.Length];
-            int total = PaddingY * 2;
+            int total = _paddingY * 2;
 
             using (var probe = new Bitmap(1, 1))
             using (var g = Graphics.FromImage(probe))
@@ -105,32 +137,34 @@ namespace DshTray
                 {
                     var size = g.MeasureString(lines[i].Text, lines[i].Font, contentWidth);
                     heights[i] = (int)Math.Ceiling(size.Height);
-                    total += heights[i] + lines[i].SpaceBefore;
+                    total += heights[i] + Dpi.ScaledSpacing(lines[i].SpaceBefore, _scale);
                 }
             }
 
-            var bmp = new Bitmap(PopupWidth, total, PixelFormat.Format32bppArgb);
+            var bmp = new Bitmap(_popupWidth, total, PixelFormat.Format32bppArgb);
             using (var g = Graphics.FromImage(bmp))
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
                 g.Clear(Color.Transparent);
 
-                var body = new Rectangle(0, 0, PopupWidth - 1, total - 1);
+                var body = new Rectangle(0, 0, _popupWidth - 1, total - 1);
 
-                using (var shadowPath = RoundedRect(new Rectangle(1, 2, body.Width, body.Height), CornerRadius))
+                using (var shadowPath = RoundedRect(
+                           new Rectangle(Dpi.Scaled(1, _scale), Dpi.Scaled(2, _scale),
+                                         body.Width, body.Height), _cornerRadius))
                 using (var shadowBrush = new SolidBrush(Color.FromArgb(38, 0, 0, 0)))
                 {
                     g.FillPath(shadowBrush, shadowPath);
                 }
 
-                using (var path = RoundedRect(body, CornerRadius))
+                using (var path = RoundedRect(body, _cornerRadius))
                 {
                     using (var back = new SolidBrush(Color.FromArgb(246, 255, 255, 255)))
                     {
                         g.FillPath(back, path);
                     }
-                    using (var border = new Pen(Color.FromArgb(48, stripe), 1.2f))
+                    using (var border = new Pen(Color.FromArgb(48, stripe), Math.Max(1f, 1.2f * _scale)))
                     {
                         g.DrawPath(border, path);
                     }
@@ -139,20 +173,20 @@ namespace DshTray
                     g.SetClip(path);
                     using (var accentBrush = new SolidBrush(stripe))
                     {
-                        g.FillRectangle(accentBrush, 0, 0, 3, total);
+                        g.FillRectangle(accentBrush, 0, 0, stripeWidth, total);
                     }
                     g.Clip = saved;
                 }
 
-                int y = PaddingY;
+                int y = _paddingY;
                 var layout = StringFormat.GenericTypographic;
                 for (int i = 0; i < lines.Length; i++)
                 {
-                    y += lines[i].SpaceBefore;
+                    y += Dpi.ScaledSpacing(lines[i].SpaceBefore, _scale);
                     using (var brush = new SolidBrush(lines[i].Color))
                     {
                         g.DrawString(lines[i].Text, lines[i].Font, brush,
-                            new RectangleF(PaddingX, y, contentWidth, heights[i]), layout);
+                            new RectangleF(_paddingX, y, contentWidth, heights[i]), layout);
                     }
                     y += heights[i];
                 }
@@ -188,13 +222,13 @@ namespace DshTray
             }
         }
 
-        private static Point Reposition(Size size)
+        private Point Reposition(Size size)
         {
             var area = Screen.PrimaryScreen.WorkingArea;
-            int x = area.Right - size.Width - ScreenMargin;
-            int y = area.Bottom - size.Height - ScreenMargin;
-            if (x < area.Left) x = area.Left + ScreenMargin;
-            if (y < area.Top) y = area.Top + ScreenMargin;
+            int x = area.Right - size.Width - _screenMargin;
+            int y = area.Bottom - size.Height - _screenMargin;
+            if (x < area.Left) x = area.Left + _screenMargin;
+            if (y < area.Top) y = area.Top + _screenMargin;
             return new Point(x, y);
         }
 
@@ -202,9 +236,9 @@ namespace DshTray
         {
             if (disposing)
             {
-                _fontTitle.Dispose();
-                _fontTime.Dispose();
-                _fontBody.Dispose();
+                if (_fontTitle != null) _fontTitle.Dispose();
+                if (_fontTime != null) _fontTime.Dispose();
+                if (_fontBody != null) _fontBody.Dispose();
             }
             base.Dispose(disposing);
         }

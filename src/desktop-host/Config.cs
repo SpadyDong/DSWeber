@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web.Script.Serialization;
 
@@ -15,6 +16,7 @@ namespace DshTray
 
     internal sealed class AppConfig
     {
+        private const string ProtectedKeyPrefix = "dpapi:";
         public static readonly string ConfigPath = Path.Combine(
             Path.GetDirectoryName(typeof(AppConfig).Assembly.Location),
             "config.json"
@@ -31,8 +33,29 @@ namespace DshTray
         public bool ShowBall { get; set; }
         public int BallX { get; set; }
         public int BallY { get; set; }
+        public bool ShowCodexQuota { get; set; }
         public string ApiKey { get; set; }
         public List<AlarmItem> Alarms { get; set; }
+
+        public AppConfig()
+        {
+            Port = 3080;
+            AutoStart = true;
+            AutoRestart = true;
+            ShowBall = true;
+            ShowCodexQuota = true;
+        }
+
+        public void ApplyDefaults()
+        {
+            if (string.IsNullOrWhiteSpace(NodePath)) NodePath = Probe.FindNode();
+            if (string.IsNullOrWhiteSpace(DshScript)) DshScript = Probe.FindDshScript();
+            if (string.IsNullOrWhiteSpace(WorkingDirectory))
+                WorkingDirectory = Path.GetDirectoryName(ConfigPath);
+            if (string.IsNullOrWhiteSpace(Host)) Host = "127.0.0.1";
+            if (ApiKey == null) ApiKey = "";
+            if (Alarms == null) Alarms = new List<AlarmItem>();
+        }
 
         public List<string> Validate()
         {
@@ -53,8 +76,8 @@ namespace DshTray
             else if (!Directory.Exists(WorkingDirectory))
                 errors.Add("WorkingDirectory 指向的目录不存在：" + WorkingDirectory);
 
-            if (Port < 0 || Port > 65535)
-                errors.Add("Port 无效，必须为 0-65535（0 表示由系统分配空闲端口）");
+            if (Port < 1 || Port > 65535)
+                errors.Add("Port 无效，必须为 1-65535");
 
             return errors;
         }
@@ -67,8 +90,18 @@ namespace DshTray
             var json = File.ReadAllText(ConfigPath, Encoding.UTF8);
             var ser = new JavaScriptSerializer();
             var cfg = ser.Deserialize<AppConfig>(json);
+            if (cfg == null) throw new InvalidDataException("配置文件内容为空或不是 JSON 对象");
+            var fields = ser.Deserialize<Dictionary<string, object>>(json);
+            if (fields == null) throw new InvalidDataException("配置文件不是 JSON 对象");
+            if (!fields.ContainsKey("Port")) cfg.Port = 3080;
+            if (!fields.ContainsKey("AutoStart")) cfg.AutoStart = true;
+            if (!fields.ContainsKey("AutoRestart")) cfg.AutoRestart = true;
+            if (!fields.ContainsKey("ShowBall")) cfg.ShowBall = true;
+            if (!fields.ContainsKey("ShowCodexQuota")) cfg.ShowCodexQuota = true;
             if (cfg.Alarms == null)
                 cfg.Alarms = MigrateLegacyAlarm(ser, json);
+            if (!string.IsNullOrEmpty(cfg.ApiKey) && cfg.ApiKey.StartsWith(ProtectedKeyPrefix, StringComparison.Ordinal))
+                cfg.ApiKey = UnprotectKey(cfg.ApiKey.Substring(ProtectedKeyPrefix.Length));
             return cfg;
         }
 
@@ -104,60 +137,43 @@ namespace DshTray
 
         public void Save()
         {
-            var lines = new List<string>
+            var fields = new Dictionary<string, object>
             {
-                Quote("NodePath", NodePath),
-                Quote("DshScript", DshScript),
-                Quote("WorkingDirectory", WorkingDirectory),
-                Quote("Host", Host),
-                Raw("Port", Port.ToString()),
-                Raw("NoOpen", NoOpen ? "true" : "false"),
-                Raw("AutoRestart", AutoRestart ? "true" : "false"),
-                Raw("AutoStart", AutoStart ? "true" : "false"),
-                Raw("ShowBall", ShowBall ? "true" : "false"),
-                Raw("BallX", BallX.ToString()),
-                Raw("BallY", BallY.ToString()),
-                Quote("ApiKey", ApiKey),
-                Raw("Alarms", SerializeAlarms(Alarms))
+                { "NodePath", NodePath }, { "DshScript", DshScript },
+                { "WorkingDirectory", WorkingDirectory }, { "Host", Host },
+                { "Port", Port }, { "NoOpen", NoOpen },
+                { "AutoRestart", AutoRestart }, { "AutoStart", AutoStart },
+                { "ShowBall", ShowBall }, { "BallX", BallX }, { "BallY", BallY },
+                { "ShowCodexQuota", ShowCodexQuota },
+                { "ApiKey", string.IsNullOrEmpty(ApiKey) ? "" : ProtectedKeyPrefix + ProtectKey(ApiKey) },
+                { "Alarms", Alarms ?? new List<AlarmItem>() }
             };
-
-            var sb = new StringBuilder();
-            sb.Append("{\r\n");
-            sb.Append(string.Join(",\r\n", lines.ToArray()));
-            sb.Append("\r\n}\r\n");
-
-            File.WriteAllText(ConfigPath, sb.ToString(), new UTF8Encoding(false));
-        }
-
-        private static string SerializeAlarms(List<AlarmItem> alarms)
-        {
-            if (alarms == null || alarms.Count == 0)
-                return "[]";
-
-            var items = new List<string>();
-            foreach (var a in alarms)
+            string json = new JavaScriptSerializer().Serialize(fields);
+            string temporary = ConfigPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            try
             {
-                items.Add("{ \"Enabled\": " + (a.Enabled ? "true" : "false")
-                    + ", \"Time\": \"" + Escape(a.Time) + "\""
-                    + ", \"Message\": \"" + Escape(a.Message) + "\" }");
+                File.WriteAllText(temporary, json, new UTF8Encoding(false));
+                if (File.Exists(ConfigPath)) File.Replace(temporary, ConfigPath, null);
+                else File.Move(temporary, ConfigPath);
             }
-            return "[\r\n      " + string.Join(",\r\n      ", items.ToArray()) + "\r\n    ]";
+            finally
+            {
+                if (File.Exists(temporary)) File.Delete(temporary);
+            }
         }
 
-        private static string Quote(string name, string value)
+        private static string ProtectKey(string key)
         {
-            return string.Format("  \"{0}\": \"{1}\"", name, Escape(value));
+            byte[] bytes = ProtectedData.Protect(Encoding.UTF8.GetBytes(key), null,
+                DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(bytes);
         }
 
-        private static string Raw(string name, string literal)
+        private static string UnprotectKey(string value)
         {
-            return string.Format("  \"{0}\": {1}", name, literal);
-        }
-
-        private static string Escape(string s)
-        {
-            if (s == null) return "";
-            return s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+            byte[] bytes = ProtectedData.Unprotect(Convert.FromBase64String(value), null,
+                DataProtectionScope.CurrentUser);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

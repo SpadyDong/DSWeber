@@ -28,11 +28,13 @@ namespace DshTray
     {
         private const string Endpoint = "https://api.deepseek.com/user/balance";
         private const int TimeoutMs = 10000;
-        private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(60);
+        private static readonly TimeSpan CacheTtl = TimeSpan.FromMinutes(2);
 
         private static readonly object Gate = new object();
         private static BalanceResult _cached;
         private static bool _inFlight;
+        private static int _generation;
+        public static event Action<BalanceResult> Refreshed;
 
         public static string CredentialsPath
         {
@@ -47,31 +49,50 @@ namespace DshTray
 
         public static void Invalidate()
         {
-            lock (Gate) { _cached = null; }
+            lock (Gate) { _cached = null; _generation++; _inFlight = false; }
+        }
+
+        public static BalanceResult GetCached()
+        {
+            lock (Gate) { return FreshCache(); }
+        }
+
+        public static void Refresh(AppConfig config)
+        {
+            Query(config, delegate { }, true);
         }
 
         public static void QueryAsync(AppConfig config, Action<BalanceResult> callback)
+        {
+            Query(config, callback, false);
+        }
+
+        private static void Query(AppConfig config, Action<BalanceResult> callback, bool force)
         {
             if (callback == null) return;
 
             var ctx = SynchronizationContext.Current;
 
+            int generation;
             lock (Gate)
             {
-                if (_cached != null && DateTime.UtcNow - _cached.FetchedAt < CacheTtl)
+                var cached = FreshCache();
+                if (!force && cached != null)
                 {
-                    var hit = _cached;
-                    Dispatch(ctx, callback, hit);
+                    Dispatch(ctx, callback, cached);
                     return;
                 }
 
                 if (_inFlight)
                 {
-                    Dispatch(ctx, callback, Failure("正在查询中，请稍候…", null));
+                    Dispatch(ctx, callback, cached != null
+                        ? cached
+                        : Failure("正在查询中，请稍候…", null));
                     return;
                 }
 
                 _inFlight = true;
+                generation = _generation;
             }
 
             string keySource;
@@ -99,14 +120,28 @@ namespace DshTray
                     result = Failure("查询失败", ex.Message);
                 }
 
+                bool current;
                 lock (Gate)
                 {
-                    _inFlight = false;
-                    if (result.Ok) _cached = result;
+                    current = generation == _generation;
+                    if (current)
+                    {
+                        _inFlight = false;
+                        _cached = result;
+                    }
                 }
 
+                if (!current) return;
                 Dispatch(ctx, callback, result);
+                var refreshed = Refreshed;
+                if (refreshed != null) refreshed(result);
             });
+        }
+
+        private static BalanceResult FreshCache()
+        {
+            return _cached != null && DateTime.UtcNow - _cached.FetchedAt < CacheTtl
+                ? _cached : null;
         }
 
         private static void Dispatch(SynchronizationContext ctx, Action<BalanceResult> callback, BalanceResult result)
