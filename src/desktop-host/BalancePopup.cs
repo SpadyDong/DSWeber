@@ -240,7 +240,8 @@ namespace DshTray
                 }
             }
 
-            if (_arkPending || _ark != null)
+            // 未订阅 Coding Plan 时整栏不显示
+            if ((_arkPending || _ark != null) && !(_ark != null && _ark.NotSubscribed))
             {
                 lines.Add(TextLine.Rule(10));
                 lines.Add(new TextLine("火山方舟（coding plan）", _fontTitle, TextMuted, 6));

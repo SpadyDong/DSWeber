@@ -12,6 +12,10 @@ namespace DshTray
     internal sealed class ArkPlan
     {
         public bool Ok { get; set; }
+
+        /// <summary>账号未订阅 Coding Plan 时为 true，气泡里整栏不显示。</summary>
+        public bool NotSubscribed { get; set; }
+
         public int? SessionLeftPercent { get; set; }
         public int? MonthlyLeftPercent { get; set; }
         public string ErrorText { get; set; }
@@ -238,7 +242,7 @@ namespace DshTray
 
                     object subObj;
                     if (!(item.TryGetValue("subscribed", out subObj) && subObj is bool && (bool)subObj))
-                        return Failure("未订阅 Coding Plan", null);
+                        return NotSubscribed();
 
                     var plan = new ArkPlan { Ok = true };
 
@@ -267,7 +271,7 @@ namespace DshTray
                     return plan;
                 }
 
-                return Failure("未订阅 Coding Plan", null);
+                return NotSubscribed();
             }
             catch (Exception ex)
             {
@@ -356,6 +360,16 @@ namespace DshTray
                 Ok = false,
                 ErrorText = text,
                 ErrorDetail = detail
+            };
+        }
+
+        private static ArkPlan NotSubscribed()
+        {
+            return new ArkPlan
+            {
+                Ok = false,
+                NotSubscribed = true,
+                ErrorText = "未订阅 Coding Plan"
             };
         }
     }
