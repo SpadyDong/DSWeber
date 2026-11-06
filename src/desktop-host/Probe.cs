@@ -26,14 +26,6 @@ namespace DshTray
             return null;
         }
 
-        public static string FindDshScript()
-        {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var candidate = Path.Combine(appData,
-                @"npm\node_modules\@deepseek-ai\dsh\lib\bin.js");
-            return File.Exists(candidate) ? candidate : null;
-        }
-
         public static string FindCodexScript()
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

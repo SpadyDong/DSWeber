@@ -136,11 +136,9 @@ namespace DshTray
             if (string.IsNullOrEmpty(script))
                 return Failure("未检测到 Codex", "未找到 npm 全局安装的 @openai/codex");
 
-            string node = config == null ? null : config.NodePath;
-            if (string.IsNullOrEmpty(node) || !File.Exists(node))
-                node = Probe.FindNode();
+            string node = Probe.FindNode();
             if (string.IsNullOrEmpty(node))
-                return Failure("未检测到 node.exe", "请在「设置」中填写 node.exe 路径");
+                return Failure("未检测到 node.exe", "请先安装 Node.js，并确保 node.exe 在 PATH 中");
 
             var psi = new ProcessStartInfo
             {
@@ -152,11 +150,6 @@ namespace DshTray
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             };
-            if (config != null && !string.IsNullOrEmpty(config.WorkingDirectory)
-                && Directory.Exists(config.WorkingDirectory))
-            {
-                psi.WorkingDirectory = config.WorkingDirectory;
-            }
 
             Process proc = null;
             try

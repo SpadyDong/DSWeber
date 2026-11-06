@@ -48,23 +48,9 @@ namespace DshTray
                         }
                     }
                 }
-                System.Collections.Generic.List<string> errors = null;
-                if (config != null)
+                if (config == null)
                 {
-                    config.ApplyDefaults();
-                    errors = config.Validate();
-                }
-
-                if (config == null || errors.Count > 0)
-                {
-                    if (errors != null && errors.Count > 0)
-                    {
-                        MessageBox.Show("以下配置缺失或无效，请确认（其余字段已自动填默认值）：\r\n\r\n"
-                            + string.Join("\r\n", errors.ToArray()),
-                            "dsh 托盘", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-
-                    using (var form = new SettingsForm(config))
+                    using (var form = new SettingsForm(null))
                     {
                         if (form.ShowDialog() != DialogResult.OK) return;
                         config = form.Result;
@@ -78,16 +64,7 @@ namespace DshTray
                     }
                 }
 
-                int owner = PortGuard.GetListenerPid(config.Port);
-                if (owner != 0)
-                {
-                    MessageBox.Show(
-                        "端口 " + config.Port + " 已被其他程序占用，dsh 托盘不会启动。\r\n\r\n"
-                        + "占用者：" + PortGuard.DescribeProcess(owner) + "\r\n\r\n"
-                        + "如果你在终端里手动运行了 dsh web，请先关闭它，再重新启动本程序。",
-                        "dsh 托盘", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                config.ApplyDefaults();
 
                 Application.Run(new TrayContext(config));
             }

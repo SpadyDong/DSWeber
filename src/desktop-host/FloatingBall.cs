@@ -11,11 +11,8 @@ namespace DshTray
         public const int BaseBallSize = 44;
         private const int BaseDragThreshold = 4;
 
-        private static readonly Color ColorRunning = Color.FromArgb(77, 107, 254);
-        private static readonly Color ColorStopped = Color.FromArgb(150, 150, 150);
-        private static readonly Color ColorCrashed = Color.FromArgb(214, 69, 69);
+        private static readonly Color BallColor = Color.FromArgb(77, 107, 254);
 
-        private readonly DshSupervisor _supervisor;
         private readonly Action<Point> _onMoved;
         private readonly Action _onMenuShowing;
         private readonly ContextMenuStrip _menu;
@@ -24,9 +21,7 @@ namespace DshTray
         private int _balanceSession;
 
         private readonly MenuAnchorWindow _menuAnchor;
-        private readonly Timer _flashTimer;
         private readonly Timer _visibilityTimer;
-        private bool _flashGray;
 
         private Point _dragOrigin;
         private Point _formOrigin;
@@ -45,9 +40,8 @@ namespace DshTray
             get { return Dpi.Scaled(BaseDragThreshold, _scale); }
         }
 
-        public FloatingBall(DshSupervisor supervisor, AppConfig appConfig, Point location, ContextMenuStrip menu, Action<Point> onMoved, Action onMenuShowing)
+        public FloatingBall(AppConfig appConfig, Point location, ContextMenuStrip menu, Action<Point> onMoved, Action onMenuShowing)
         {
-            _supervisor = supervisor;
             _appConfig = appConfig;
             _balancePopup = new BalancePopup();
             _menu = menu;
@@ -68,19 +62,9 @@ namespace DshTray
             MouseMove += OnBallMouseMove;
             MouseUp += OnBallMouseUp;
 
-            _flashTimer = new Timer();
-            _flashTimer.Interval = 500;
-            _flashTimer.Tick += OnFlashTick;
-
             _visibilityTimer = new Timer();
             _visibilityTimer.Interval = 5000;
             _visibilityTimer.Tick += OnVisibilityTick;
-        }
-
-        private void OnFlashTick(object sender, EventArgs e)
-        {
-            _flashGray = !_flashGray;
-            Redraw();
         }
 
         private void OnVisibilityTick(object sender, EventArgs e)
@@ -164,47 +148,12 @@ namespace DshTray
         {
             if (!IsHandleCreated) return;
 
-            Color color;
-            switch (_supervisor.State)
-            {
-                case ServiceState.Running:
-                    color = ColorRunning;
-                    break;
-                case ServiceState.Starting:
-                    color = _flashGray ? ColorStopped : ColorRunning;
-                    break;
-                case ServiceState.Crashed:
-                case ServiceState.PortConflict:
-                    color = ColorCrashed;
-                    break;
-                default:
-                    color = ColorStopped;
-                    break;
-            }
-
-            if (_supervisor.State == ServiceState.Starting)
-            {
-                if (!_flashTimer.Enabled)
-                {
-                    _flashTimer.Start();
-                }
-            }
-            else if (_flashTimer.Enabled)
-            {
-                _flashTimer.Stop();
-            }
-
-            using (var surface = ComposeBall(color))
+            using (var surface = ComposeBall(BallColor))
             {
                 ApplyLayeredBitmap(surface);
             }
 
-            string label = _supervisor.State == ServiceState.Running ? "运行中"
-                         : _supervisor.State == ServiceState.Starting ? "启动中"
-                         : _supervisor.State == ServiceState.Crashed ? "已异常退出"
-                         : _supervisor.State == ServiceState.PortConflict ? "端口冲突"
-                         : "已停止";
-            AccessibleName = "dsh web - " + label;
+            AccessibleName = "余额悬浮球";
         }
 
         private Bitmap ComposeBall(Color glyphColor)
@@ -435,11 +384,6 @@ namespace DshTray
         {
             if (disposing)
             {
-                if (_flashTimer != null)
-                {
-                    _flashTimer.Stop();
-                    _flashTimer.Dispose();
-                }
                 if (_visibilityTimer != null)
                 {
                     _visibilityTimer.Stop();

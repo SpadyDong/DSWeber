@@ -22,13 +22,6 @@ namespace DshTray
             "config.json"
         );
 
-        public string NodePath { get; set; }
-        public string DshScript { get; set; }
-        public string WorkingDirectory { get; set; }
-        public string Host { get; set; }
-        public int Port { get; set; }
-        public bool NoOpen { get; set; }
-        public bool AutoRestart { get; set; }
         public bool AutoStart { get; set; }
         public bool ShowBall { get; set; }
         public int BallX { get; set; }
@@ -39,47 +32,15 @@ namespace DshTray
 
         public AppConfig()
         {
-            Port = 3080;
             AutoStart = true;
-            AutoRestart = true;
             ShowBall = true;
             ShowCodexQuota = true;
         }
 
         public void ApplyDefaults()
         {
-            if (string.IsNullOrWhiteSpace(NodePath)) NodePath = Probe.FindNode();
-            if (string.IsNullOrWhiteSpace(DshScript)) DshScript = Probe.FindDshScript();
-            if (string.IsNullOrWhiteSpace(WorkingDirectory))
-                WorkingDirectory = Path.GetDirectoryName(ConfigPath);
-            if (string.IsNullOrWhiteSpace(Host)) Host = "127.0.0.1";
             if (ApiKey == null) ApiKey = "";
             if (Alarms == null) Alarms = new List<AlarmItem>();
-        }
-
-        public List<string> Validate()
-        {
-            var errors = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(NodePath))
-                errors.Add("NodePath 未配置（node.exe 的完整路径）");
-            else if (!File.Exists(NodePath))
-                errors.Add("NodePath 指向的文件不存在：" + NodePath);
-
-            if (string.IsNullOrWhiteSpace(DshScript))
-                errors.Add("DshScript 未配置（dsh 的 bin.js 完整路径）");
-            else if (!File.Exists(DshScript))
-                errors.Add("DshScript 指向的文件不存在：" + DshScript);
-
-            if (string.IsNullOrWhiteSpace(WorkingDirectory))
-                errors.Add("WorkingDirectory 未配置（dsh web 的启动目录）");
-            else if (!Directory.Exists(WorkingDirectory))
-                errors.Add("WorkingDirectory 指向的目录不存在：" + WorkingDirectory);
-
-            if (Port < 1 || Port > 65535)
-                errors.Add("Port 无效，必须为 1-65535");
-
-            return errors;
         }
 
         public static AppConfig Load()
@@ -93,9 +54,7 @@ namespace DshTray
             if (cfg == null) throw new InvalidDataException("配置文件内容为空或不是 JSON 对象");
             var fields = ser.Deserialize<Dictionary<string, object>>(json);
             if (fields == null) throw new InvalidDataException("配置文件不是 JSON 对象");
-            if (!fields.ContainsKey("Port")) cfg.Port = 3080;
             if (!fields.ContainsKey("AutoStart")) cfg.AutoStart = true;
-            if (!fields.ContainsKey("AutoRestart")) cfg.AutoRestart = true;
             if (!fields.ContainsKey("ShowBall")) cfg.ShowBall = true;
             if (!fields.ContainsKey("ShowCodexQuota")) cfg.ShowCodexQuota = true;
             if (cfg.Alarms == null)
@@ -139,10 +98,7 @@ namespace DshTray
         {
             var fields = new Dictionary<string, object>
             {
-                { "NodePath", NodePath }, { "DshScript", DshScript },
-                { "WorkingDirectory", WorkingDirectory }, { "Host", Host },
-                { "Port", Port }, { "NoOpen", NoOpen },
-                { "AutoRestart", AutoRestart }, { "AutoStart", AutoStart },
+                { "AutoStart", AutoStart },
                 { "ShowBall", ShowBall }, { "BallX", BallX }, { "BallY", BallY },
                 { "ShowCodexQuota", ShowCodexQuota },
                 { "ApiKey", string.IsNullOrEmpty(ApiKey) ? "" : ProtectedKeyPrefix + ProtectKey(ApiKey) },

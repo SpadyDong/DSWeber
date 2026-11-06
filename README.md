@@ -1,28 +1,26 @@
 # DshTray
 
-把 `dsh web` 收进 Windows 托盘的小工具。后台默默跑着 `dsh web`，不再占一个前台终端窗口；状态、余额、配额一眼可见。
+Windows 桌面余额悬浮球。右下角一个小球，左键点开就能看到 DeepSeek 余额、Codex 配额和火山方舟 Coding Plan 剩余额度，不用再开网页或终端。
 
 - 运行时只依赖系统自带的 .NET Framework 4.0，无需安装任何运行时
 - 常驻内存小、几乎不占 CPU（无轮询渲染，界面按需重绘）
 - 单文件 exe，拷到哪都能跑，配置就放在 exe 旁边
+- 不托管、不占用任何端口，也不依赖 dsh 本体
 
 ## 功能
 
-- **托管 dsh web**：从托盘启动/停止，端口冲突提前拦截，进程异常退出自动重启（最多 5 次）
-- **连带退出**：托盘退出时会一并结束它启动的 dsh web（Windows Job Object），不留孤儿进程
-- **单实例**：重复双击不会起第二个托盘，只会弹出提示气泡
-- **外部进程巡检**：每 60 秒检查一次是否有人在终端里手动跑了 dsh web，避免抢端口
-- **开机自启**：写 `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` 下的 `DshTray` 项
-- **桌面悬浮球**：可拖动、位置持久化、状态配色，左键查余额、右键出菜单
+- **桌面悬浮球**：可拖动、位置持久化，左键查余额、右键出菜单
 - **余额气泡**：DeepSeek 余额（含峰/谷）、Codex 配额、火山方舟 Coding Plan
+- **后台刷新**：每 60 秒刷新一次余额数据，点击时优先用缓存，秒开
+- **开机自启**：写 `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` 下的 `DshTray` 项
 - **闹钟**：多条目定时提醒
+- **单实例**：重复双击不会起第二个实例，只会弹出提示气泡
 - **高 DPI 适配**：按显示器逐个感知 DPI，多屏混合缩放不会糊
 
 ## 环境要求
 
 - Windows（自带 .NET Framework 4.0+ 即可）
-- **Node.js**：`node.exe`，用于拉起 `dsh web`
-- **dsh**：已全局安装，探测路径 `%APPDATA%\npm\node_modules\@deepseek-ai\dsh\lib\bin.js`
+- 可选 **Node.js**：仅 Codex 配额需要，`node.exe` 从 `PATH` 里自动查找
 - 可选 **Codex CLI**：探测路径 `%APPDATA%\npm\node_modules\@openai\codex\bin\codex.js`，用于显示 Codex 配额
 - 可选 **火山方舟 CLI**：安装 `npm i @volcengine/ark-cli -g`，探测路径 `%APPDATA%\npm\node_modules\@volcengine\ark-cli\bin\arkcli*windows-amd64*.exe`
 
@@ -40,9 +38,8 @@ build.cmd
 
 双击 `dist\DshTray.exe`。程序以自己所在目录作为数据目录：
 
-- 找不到 `config.json`，或配置缺失/无效时，会弹出配置窗口，填好保存后开始运行
-- 配置窗口里的路径、Host、端口都有默认值，一般只需要填 DeepSeek API Key（也可以留空）
-- 端口被其他程序占用时会直接提示并退出，不会硬起
+- 找不到 `config.json` 时会弹出配置窗口，填好保存后开始运行
+- 一般只需要填 DeepSeek API Key（也可以留空，见下文「API Key 来源」）
 
 `config.json` 与 `DshTray.exe` 必须在同一目录。
 
@@ -50,27 +47,12 @@ build.cmd
 
 | 键 | 含义 | 默认值 |
 | --- | --- | --- |
-| `NodePath` | `node.exe` 的完整路径 | 从 `PATH` 里找到的第一个 `node.exe` |
-| `DshScript` | dsh 的 `lib\bin.js` 完整路径 | `%APPDATA%\npm\node_modules\@deepseek-ai\dsh\lib\bin.js` |
-| `WorkingDirectory` | `dsh web` 的工作目录 | `DshTray.exe` 所在目录 |
-| `Host` | 监听地址 | `127.0.0.1` |
-| `Port` | 监听端口 | `3080` |
-| `NoOpen` | 启动 `dsh web` 时附加 `--no-open` | `false` |
-| `AutoRestart` | 进程异常退出后自动重启（最多 5 次） | `true` |
-| `AutoStart` | 开机自动启动本托盘程序 | `true` |
+| `AutoStart` | 开机自动启动本程序 | `true` |
 | `ShowBall` | 显示桌面悬浮球 | `true` |
-| `BallX` / `BallY` | 悬浮球坐标，拖动后自动保存 | `0` / `0`（左上角） |
+| `BallX` / `BallY` | 悬浮球坐标，拖动后自动保存 | `0` / `0`（左上角，启动时会自动挪进工作区） |
 | `ShowCodexQuota` | 在余额气泡里显示 Codex 配额 | `true` |
 | `ApiKey` | DeepSeek API Key | 空 |
 | `Alarms` | 闹钟列表，每项 `{ Enabled, Time, Message }` | 空列表 |
-
-实际执行的命令等价于：
-
-```cmd
-"<NodePath>" "<DshScript>" web --host <Host> --port <Port> [--no-open]
-```
-
-Web 地址为 `http://<Host>:<Port>/`（`Host` 为 `0.0.0.0` 或 `::` 时按 `127.0.0.1` 显示）。
 
 `ApiKey` 保存时会用 Windows DPAPI（当前用户）加密，以 `dpapi:` 前缀写回 `config.json`。
 
@@ -78,15 +60,12 @@ Web 地址为 `http://<Host>:<Port>/`（`Host` 为 `0.0.0.0` 或 `::` 时按 `12
 
 | 项 | 说明 |
 | --- | --- |
-| 状态：xxx | 点开看状态详情：地址、PID、已运行时长、自动重启次数、最近错误 |
-| 打开 Web 界面 | 用默认浏览器打开 `http://host:port/`（双击托盘图标同效） |
-| 启动 / 停止 | 启停 `dsh web` |
 | 开机启动 | 勾选即写入当前用户的启动项 |
 | 桌面悬浮球 | 勾选即显示/隐藏悬浮球，设置会被保存 |
 | 闹钟 | 打开闹钟设置（添加/编辑/删除，勾选启用） |
 | 重新登录火山方舟 | 打开 `arkcli auth login volc-sso` 走一遍登录，完成后自动重查配额 |
-| 设置 | 改路径、Host、端口、API Key、自启与 Codex 显示等，保存后会重启服务并重建悬浮球 |
-| 退出 | 结束托盘，同时结束它拉起的 dsh web |
+| 设置 | 改 API Key、自启与 Codex 显示等，保存后重建悬浮球并重新查询 |
+| 退出 | 结束程序 |
 
 ## 悬浮球
 
@@ -94,14 +73,7 @@ Web 地址为 `http://<Host>:<Port>/`（`Host` 为 `0.0.0.0` 或 `::` 时按 `12
 - **左键单击**：弹出余额气泡
 - **右键**：弹出托盘菜单（这里**不含**「退出」，避免误触）
 
-配色（不使用绿色）：
-
-| 状态 | 颜色 |
-| --- | --- |
-| 运行中 | 蓝 `#4D6BFE` |
-| 启动中 | 蓝与灰每 500ms 交替闪烁 |
-| 已停止 | 灰 `#969696` |
-| 已异常退出 / 端口冲突 | 红 `#D64545` |
+小球与托盘图标统一使用品牌蓝 `#4D6BFE`。
 
 ## 余额气泡
 
@@ -133,7 +105,7 @@ Web 地址为 `http://<Host>:<Port>/`（`Host` 为 `0.0.0.0` 或 `::` 时按 `12
 
 ### 刷新策略
 
-托盘每 60 秒在后台刷新一次三路数据，缓存有效期 2 分钟。点击悬浮球时优先直接显示缓存，秒开；没有缓存才发起实时查询。
+后台每 60 秒刷新一次三路数据，缓存有效期 2 分钟。点击悬浮球时优先直接显示缓存，秒开；没有缓存才发起实时查询。
 
 ## API Key 来源
 
@@ -156,8 +128,7 @@ Web 地址为 `http://<Host>:<Port>/`（`Host` 为 `0.0.0.0` 或 `::` 时按 `12
 build.cmd                  编译脚本（csc.exe）
 src/desktop-host/          全部 C# 源码
   Program.cs               入口：单实例、DPI 感知、配置加载
-  TrayContext.cs           托盘图标与菜单、后台刷新与巡检定时器
-  DshSupervisor.cs         dsh web 进程托管（Job Object、自动重启）
+  TrayContext.cs           托盘图标与菜单、后台刷新定时器
   FloatingBall.cs          桌面悬浮球
   BalancePopup.cs          余额气泡（DeepSeek / Codex / 火山方舟）
   BalanceService.cs        DeepSeek 余额查询与缓存
@@ -168,12 +139,12 @@ src/desktop-host/          全部 C# 源码
   AlarmDialog.cs           闹钟设置窗
   AlarmPopup.cs            提醒弹窗
   SettingsForm.cs          配置窗
-  Config.cs                config.json 读写、默认值、DPAPI 加密
-  Probe.cs                 自动探测 node / dsh / codex / arkcli 路径
+  Config.cs                config.json 读写、DPAPI 加密
+  Probe.cs                 自动探测 node / codex / arkcli 路径
   Dpi.cs                   进程 DPI 感知与按显示器缩放
   AutoStart.cs             开机自启
-  PortGuard.cs             端口占用检测
-  IconFactory.cs / BrandGlyph.cs / IconFactory.cs  图标绘制
+  IconFactory.cs           图标绘制
+  BrandGlyph.cs            品牌图标路径
 tests/desktop-host/        回归测试与验证脚本
 design/desktop-pet/        视觉稿（未参与编译）
 tools/                     图标路径生成等辅助脚本
@@ -182,8 +153,7 @@ tools/                     图标路径生成等辅助脚本
 ## 已知限制
 
 - 峰/谷表只覆盖 2026 年，其它年份不显示峰谷标识
-- 端口被占用时不接管、不复用，直接拒绝启动
-- 只允许运行一个托盘实例
+- 只允许运行一个实例
 
 ## 许可
 
