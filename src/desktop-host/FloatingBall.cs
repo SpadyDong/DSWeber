@@ -11,7 +11,15 @@ namespace DshTray
         public const int BaseBallSize = 44;
         private const int BaseDragThreshold = 4;
 
+        // 右上角 Codex 剩余量：纯数字文本，无背景（按 Apple HIG 中性色/细描边）
+        private const int BaseCodexInsetRight = 5;
+        private const int BaseCodexTop = 5;
+        private const float BaseCodexFontSize = 7f;
+        private const string SevenDayLabel = "7 天";
+
         private static readonly Color BallColor = Color.FromArgb(77, 107, 254);
+        private static readonly Color RingColor = Color.FromArgb(229, 229, 234);
+        private static readonly Color CodexTextColor = Color.FromArgb(29, 29, 31);
 
         private readonly Action<Point> _onMoved;
         private readonly Action _onMenuShowing;
@@ -28,6 +36,10 @@ namespace DshTray
         private bool _dragging;
         private bool _moved;
         private float _scale = 1f;
+
+        private int? _codexLeftPercent;
+        private Font _codexFont;
+        private float _codexFontScale = -1f;
 
         /// <summary>按当前显示器 DPI 缩放后的球体边长。</summary>
         public int BallSize
@@ -57,6 +69,8 @@ namespace DshTray
                 location.X + BaseBallSize / 2, location.Y + BaseBallSize / 2)));
             Size = new Size(BallSize, BallSize);
             Location = location;
+
+            _codexLeftPercent = PickBadgePercent(CodexQuotaService.GetCached());
 
             MouseDown += OnBallMouseDown;
             MouseMove += OnBallMouseMove;
@@ -112,8 +126,8 @@ namespace DshTray
 
                 if (Math.Abs(scale - _scale) > 0.001f)
                 {
-                    int centerX = Location.X + Width / 2;
-                    int centerY = Location.Y + Height / 2;
+                    int centerX = Location.X + BallSize / 2;
+                    int centerY = Location.Y + BallSize / 2;
 
                     _scale = scale;
                     Size = new Size(BallSize, BallSize);
@@ -163,6 +177,8 @@ namespace DshTray
             using (var g = Graphics.FromImage(bmp))
             {
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                // 分层窗口带 alpha，ClearType 的彩色次像素会在透明边上出现彩边
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 g.Clear(Color.Transparent);
 
                 var plate = new Rectangle(0, 0, size - 1, size - 1);
@@ -174,20 +190,58 @@ namespace DshTray
                 {
                     g.FillEllipse(back, plate);
                 }
-                using (var ring = new Pen(Color.FromArgb(60, glyphColor), Math.Max(1f, 1.6f * _scale)))
+                using (var ring = new Pen(RingColor, Math.Max(1f, 1f * _scale)))
                 {
                     g.DrawEllipse(ring, plate);
                 }
 
                 using (var glyph = IconFactory.CreateGlyphBitmap(size, glyphColor))
                 {
-                    int inner = (int)(size * 0.66f);
+                    int inner = (int)(size * 0.54f);
                     int pad = (size - inner) / 2;
+                    int glyphTop = pad + Dpi.Scaled(4, _scale);
                     g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(glyph, new Rectangle(pad, pad, inner, inner));
+                    g.DrawImage(glyph, new Rectangle(pad, glyphTop, inner, inner));
                 }
+
+                DrawCodexPercent(g);
             }
             return bmp;
+        }
+
+        /// <summary>球体右上角画 Codex 剩余百分比，纯文本无背景。</summary>
+        private void DrawCodexPercent(Graphics g)
+        {
+            if (_codexLeftPercent == null) return;
+
+            string text = _codexLeftPercent.Value + "%";
+            var font = EnsureCodexFont();
+            var format = (StringFormat)StringFormat.GenericTypographic.Clone();
+            format.FormatFlags |= StringFormatFlags.NoWrap;
+
+            int textWidth = (int)Math.Ceiling(
+                g.MeasureString(text, font, int.MaxValue, StringFormat.GenericTypographic).Width);
+
+            int right = BallSize - Dpi.Scaled(BaseCodexInsetRight, _scale);
+            int top = Dpi.Scaled(BaseCodexTop, _scale);
+
+            using (var brush = new SolidBrush(CodexTextColor))
+            {
+                g.DrawString(text, font, brush,
+                    new RectangleF(right - textWidth, top, textWidth, BallSize - top), format);
+            }
+        }
+
+        private Font EnsureCodexFont()
+        {
+            if (_codexFont != null && Math.Abs(_codexFontScale - _scale) < 0.001f)
+                return _codexFont;
+
+            if (_codexFont != null) _codexFont.Dispose();
+
+            _codexFontScale = _scale;
+            _codexFont = new Font("Segoe UI", BaseCodexFontSize * _scale, FontStyle.Bold, GraphicsUnit.Point);
+            return _codexFont;
         }
 
         private void OnBallMouseDown(object sender, MouseEventArgs e)
@@ -370,8 +424,29 @@ namespace DshTray
 
         public void UpdateCodex(CodexQuota result)
         {
+            int? percent = PickBadgePercent(result);
+            if (percent != _codexLeftPercent)
+            {
+                _codexLeftPercent = percent;
+                Redraw();
+            }
+
             if (!_balancePopup.IsDisposed && _balancePopup.Visible && _appConfig.ShowCodexQuota)
                 _balancePopup.SetCodex(_balanceSession, result);
+        }
+
+        /// <summary>取 7 天窗口的剩余百分比；无有效数据时返回 null（不显示数字）。</summary>
+        private int? PickBadgePercent(CodexQuota quota)
+        {
+            if (_appConfig == null || !_appConfig.ShowCodexQuota) return null;
+            if (quota == null || !quota.Ok || quota.Windows == null) return null;
+
+            foreach (var window in quota.Windows)
+            {
+                if (string.Equals(window.Label, SevenDayLabel, StringComparison.OrdinalIgnoreCase))
+                    return window.LeftPercent;
+            }
+            return null;
         }
 
         public void UpdateArk(ArkPlan result)
@@ -390,6 +465,11 @@ namespace DshTray
                     _visibilityTimer.Dispose();
                 }
                 if (_menuAnchor != null) _menuAnchor.Dispose();
+                if (_codexFont != null)
+                {
+                    _codexFont.Dispose();
+                    _codexFont = null;
+                }
                 if (_balancePopup != null)
                 {
                     _balancePopup.HidePopup();
