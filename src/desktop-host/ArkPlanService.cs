@@ -241,8 +241,15 @@ namespace DshTray
                         continue;
 
                     object subObj;
-                    if (!(item.TryGetValue("subscribed", out subObj) && subObj is bool && (bool)subObj))
+                    bool subscribed = item.TryGetValue("subscribed", out subObj)
+                                      && subObj is bool && (bool)subObj;
+                    if (!subscribed)
+                    {
+                        // 登录失效时 arkcli 也返回 subscribed=false，靠 error 文本区分
+                        if (LooksLikeAuthFailure(Str(item, "error")))
+                            return Failure("登录已过期", "请在托盘菜单点「重新登录火山方舟」");
                         return NotSubscribed();
+                    }
 
                     var plan = new ArkPlan { Ok = true };
 
